@@ -48,7 +48,7 @@ public class TestPerformance {
 		Locale.setDefault(Locale.US);
 		}
 	//Before pour junit5 => monter la version dans le gradle.setting
-	@Ignore
+
 	@Test
 	public void highVolumeTrackLocation() {
 		GpsUtil gpsUtil = new GpsUtil();
@@ -72,7 +72,7 @@ public class TestPerformance {
 		assertTrue(TimeUnit.MINUTES.toSeconds(15) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
 	}
 	
-	@Ignore
+
 	@Test
 	public void highVolumeGetRewards() {
 		GpsUtil gpsUtil = new GpsUtil();
@@ -89,7 +89,7 @@ public class TestPerformance {
 		allUsers = tourGuideService.getAllUsers();
 		allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 	     
-	    allUsers.forEach(u -> rewardsService.calculateRewards(u));
+	    allUsers.forEach(u -> rewardsService.calculateRewards(u)); // regader cette methode et la ligne 66 et class Tourguideservice methode (ligne 86)
 	    
 		for(User user : allUsers) {
 			assertTrue(user.getUserRewards().size() > 0);
