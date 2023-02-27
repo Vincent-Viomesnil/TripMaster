@@ -2,11 +2,9 @@ package tourGuide;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
+import gpsUtil.location.Location;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -50,7 +48,17 @@ public class TestRewardsService {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		Attraction attraction = gpsUtil.getAttractions().get(0);
-		assertTrue(rewardsService.isWithinAttractionProximity(attraction, attraction));
+		Location location = new Location(33.817595, -117.922008); // Location settée similaire à l'attraction numero 1
+		assertTrue(rewardsService.isWithinAttractionProximity(attraction, location));
+	}
+
+	@Test
+	public void isNotWithinAttractionProximity() {
+		GpsUtil gpsUtil = new GpsUtil();
+		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
+		Attraction attraction = gpsUtil.getAttractions().get(0);
+		Location location = new Location(-70, 120); // Location settée avec des données opposées à l'attraction numero 1
+		assertFalse(rewardsService.isWithinAttractionProximity(attraction, location));
 	}
 	
 //	@Ignore // Needs fixed - can throw ConcurrentModificationException
@@ -62,7 +70,8 @@ public class TestRewardsService {
 
 		InternalTestHelper.setInternalUserNumber(1);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
-		
+
+
 		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
 		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
 		tourGuideService.tracker.stopTracking();
