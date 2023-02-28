@@ -76,11 +76,11 @@ public class TourGuideService {
 <span class="fc" id="L76">	}</span>
 	
 	public List&lt;Provider&gt; getTripDeals(User user) {
-<span class="nc" id="L79">		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
-<span class="nc" id="L80">		List&lt;Provider&gt; providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), </span>
-<span class="nc" id="L81">				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);</span>
-<span class="nc" id="L82">		user.setTripDeals(providers);</span>
-<span class="nc" id="L83">		return providers;</span>
+<span class="pc" id="L79">		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
+<span class="fc" id="L80">		List&lt;Provider&gt; providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), </span>
+<span class="fc" id="L81">				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);</span>
+<span class="fc" id="L82">		user.setTripDeals(providers);</span>
+<span class="fc" id="L83">		return providers;</span>
 	}
 	
 	public VisitedLocation trackUserLocation(User user) {
@@ -93,8 +93,8 @@ public class TourGuideService {
 	public List&lt;Attraction&gt; getNearByAttractions(VisitedLocation visitedLocation) {
 <span class="fc" id="L94">		List&lt;Attraction&gt; nearbyAttractions = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L95" title="All 2 branches covered.">		for(Attraction attraction : gpsUtil.getAttractions()) {</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">			if(rewardsService.isWithinAttractionProximity(attraction, visitedLocation.location)) {</span>
-<span class="nc" id="L97">				nearbyAttractions.add(attraction);</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">			if(rewardsService.isWithinAttractionProximity(attraction, visitedLocation.location)) {</span>
+<span class="fc" id="L97">				nearbyAttractions.add(attraction);</span>
 			}
 <span class="fc" id="L99">		}</span>
 		
