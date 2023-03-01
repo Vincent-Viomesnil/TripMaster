@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import gpsUtil.GpsUtil;
@@ -21,6 +21,8 @@ import tourGuide.service.TourGuideService;
 import tourGuide.user.User;
 import tripPricer.Provider;
 
+
+@Slf4j
 public class TestTourGuideService {
 
 	@BeforeClass
@@ -108,12 +110,15 @@ public void getNearbyAttractions() {
 
 	User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 	VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user);
-
+	log.info("visitedLocation : " +visitedLocation);
 	List<Attraction> attractions = tourGuideService.getNearByAttractions(visitedLocation); //debug le test ne doit pas être modifié
-
+	log.info("attractions : " +attractions);
+	log.info("visitedLocation après  List<Attraction> attractions =...: " +visitedLocation);
 	tourGuideService.tracker.stopTracking();
+	log.info("attractions après tourGuideService.tracker.stopTracking(); " +attractions);
+	log.info("visitedLocation après  tourGuideService.tracker.stopTracking(); " +visitedLocation);
 
-	assertEquals(5, attractions.size()); //attractions.size = 1 (également sur TestRewardsService nearAllByAttractions)
+	assertEquals(5,attractions.size()); //attractions.size = 1 (également sur TestRewardsService nearAllByAttractions)
 
 }
 
