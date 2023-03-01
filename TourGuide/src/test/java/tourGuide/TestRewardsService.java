@@ -85,9 +85,8 @@ public class TestRewardsService {
 //		private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
 //			return getDistance(attraction, visitedLocation.location) > proximityBuffer ? false : true;
 //		}
-		assertEquals(gpsUtil.getAttractions().size(), userRewards.size());
-//		assertThat(gpsUtil.getAttractions().(userRewards));
-		// gpsUtil.getAttractions().size() = 26
+		assertEquals(gpsUtil.getAttractions().size(), userRewards.size()); // Corriger le test, exception aléatoire Concurrent...
+		// le pb c'est qu'il y a une liste qui est appellée et qui est settée en même temps
 	}
 
 	@Test

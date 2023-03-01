@@ -109,7 +109,7 @@ public void getNearbyAttractions() {
 	User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 	VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user);
 
-	List<Attraction> attractions = tourGuideService.getNearByAttractions(visitedLocation);
+	List<Attraction> attractions = tourGuideService.getNearByAttractions(visitedLocation); //debug le test ne doit pas être modifié
 
 	tourGuideService.tracker.stopTracking();
 
@@ -118,6 +118,7 @@ public void getNearbyAttractions() {
 }
 
 	
+	@Test
 	public void getTripDeals() {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
@@ -126,7 +127,7 @@ public void getNearbyAttractions() {
 		
 		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 
-		List<Provider> providers = tourGuideService.getTripDeals(user);
+		List<Provider> providers = tourGuideService.getTripDeals(user); //debug + le test ne doit pas être modifié
 		
 		tourGuideService.tracker.stopTracking();
 		
