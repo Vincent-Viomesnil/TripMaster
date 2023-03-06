@@ -2,13 +2,7 @@ package tourGuide.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -79,7 +73,7 @@ public class TourGuideService {
 		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum();
 		List<Provider> providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), 
 				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);
-		user.setTripDeals(providers);
+		user.setTripDeals(providers); //Provider.class ne peut être modifié
 		return providers;
 	}
 	
@@ -104,32 +98,56 @@ public class TourGuideService {
 //
 //		return nearbyAttractions;
 //	}
-public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
-	List<Attraction> nearbyAttractions = new ArrayList<>();
-	for (Attraction attraction : gpsUtil.getAttractions()) {
-		if (rewardsService.nearAttraction(visitedLocation,attraction)) {
-			if (nearbyAttractions.size() < 6) {
-				nearbyAttractions.add(attraction);
-			}
-		}
-	}
 
-	return nearbyAttractions;
-}
-	
-	private void addShutDownHook() {
-		Runtime.getRuntime().addShutdownHook(new Thread() { 
-		      public void run() {
-		        tracker.stopTracking();
-		      } 
-		    }); 
-	}
-	
-	/**********************************************************************************
-	 * 
-	 * Methods Below: For Internal Testing
-	 * 
-	 **********************************************************************************/
+//	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
+//		List<Attraction> nearbyAttractions = new ArrayList<>();
+//		for (Attraction attraction : gpsUtil.getAttractions()) {
+//			if (rewardsService.isWithinAttractionProximity(attraction, visitedLocation.location)) {
+//				nearbyAttractions.add(attraction);
+//			}
+//		}
+//		return nearbyAttractions;
+//	}
+//
+
+//	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
+//		List<Attraction> nearbyFiveAttractions =  new ArrayList<>();
+//		for (Attraction attraction :  gpsUtil.getAttractions()) {
+//			if (rewardsService.nearAttraction(visitedLocation, attraction)) {
+//				nearbyFiveAttractions = gpsUtil.getAttractions()
+//						.stream()
+//						.limit(5)
+//						.collect(Collectors.toList());
+//			}
+//		}
+	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
+		List<Attraction> nearbyFiveAttractions = new ArrayList<>();
+		for (Attraction attraction : gpsUtil.getAttractions()) {
+			if (rewardsService.nearAttraction(visitedLocation, attraction));
+			nearbyFiveAttractions = gpsUtil.getAttractions()
+					.stream()
+					.sorted(Comparator.comparing(o -> rewardsService.nearAttraction(visitedLocation, attraction)))
+					.limit(5)
+					.collect(Collectors.toList());
+			}
+			return nearbyFiveAttractions;
+		}
+
+
+
+   private void addShutDownHook() {
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				public void run() {
+					tracker.stopTracking();
+				}
+			});
+		}
+
+   /**********************************************************************************
+    *
+    * Methods Below: For Internal Testing
+    *
+    **********************************************************************************/
 	private static final String tripPricerApiKey = "test-server-api-key";
 	// Database connection will be used for external users, but for testing purposes internal users are provided and stored in memory
 	private final Map<String, User> internalUserMap = new HashMap<>();

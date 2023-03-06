@@ -42,7 +42,7 @@ public class RewardsService {
 		
 <span class="fc bfc" id="L43" title="All 2 branches covered.">		for(VisitedLocation visitedLocation : userLocations) {</span>
 <span class="fc bfc" id="L44" title="All 2 branches covered.">			for(Attraction attraction : attractions) {</span>
-<span class="fc bfc" id="L45" title="All 2 branches covered.">				if(user.getUserRewards().stream().filter(r -&gt; r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">				if(user.getUserRewards().stream().filter(r -&gt; r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {</span>
 <span class="fc bfc" id="L46" title="All 2 branches covered.">					if(nearAttraction(visitedLocation, attraction)) {</span>
 <span class="fc" id="L47">						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));</span>
 					}
@@ -52,32 +52,29 @@ public class RewardsService {
 <span class="fc" id="L52">	}</span>
 	
 	public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
-<span class="fc bfc" id="L55" title="All 2 branches covered.">		return getDistance(attraction, location) &gt; attractionProximityRange ? false : true;</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">		return (getDistance(attraction, location) &lt; attractionProximityRange);</span>
 	}
-	
-//	private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
-//		return getDistance(attraction, visitedLocation.location) &gt; proximityBuffer ? false : true;
-//	}
+
 	public boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
-<span class="fc bfc" id="L62" title="All 2 branches covered.">		return getDistance(attraction, visitedLocation.location) &gt; proximityBuffer ? false : true;</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">		return (getDistance(attraction, visitedLocation.location) &lt; proximityBuffer);</span>
 	}
 	
 	private int getRewardPoints(Attraction attraction, User user) {
-<span class="fc" id="L66">		return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());</span>
+<span class="fc" id="L63">		return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());</span>
 	}
 	
 	public double getDistance(Location loc1, Location loc2) {
-<span class="fc" id="L70">        double lat1 = Math.toRadians(loc1.latitude);</span>
-<span class="fc" id="L71">        double lon1 = Math.toRadians(loc1.longitude);</span>
-<span class="fc" id="L72">        double lat2 = Math.toRadians(loc2.latitude);</span>
-<span class="fc" id="L73">        double lon2 = Math.toRadians(loc2.longitude);</span>
+<span class="fc" id="L67">        double lat1 = Math.toRadians(loc1.latitude);</span>
+<span class="fc" id="L68">        double lon1 = Math.toRadians(loc1.longitude);</span>
+<span class="fc" id="L69">        double lat2 = Math.toRadians(loc2.latitude);</span>
+<span class="fc" id="L70">        double lon2 = Math.toRadians(loc2.longitude);</span>
 
-<span class="fc" id="L75">        double angle = Math.acos(Math.sin(lat1) * Math.sin(lat2)</span>
-<span class="fc" id="L76">                               + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));</span>
+<span class="fc" id="L72">        double angle = Math.acos(Math.sin(lat1) * Math.sin(lat2)</span>
+<span class="fc" id="L73">                               + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));</span>
 
-<span class="fc" id="L78">        double nauticalMiles = 60 * Math.toDegrees(angle);</span>
-<span class="fc" id="L79">        double statuteMiles = STATUTE_MILES_PER_NAUTICAL_MILE * nauticalMiles;</span>
-<span class="fc" id="L80">        return statuteMiles;</span>
+<span class="fc" id="L75">        double nauticalMiles = 60 * Math.toDegrees(angle);</span>
+<span class="fc" id="L76">        double statuteMiles = STATUTE_MILES_PER_NAUTICAL_MILE * nauticalMiles;</span>
+<span class="fc" id="L77">        return statuteMiles;</span>
 	}
 
 }

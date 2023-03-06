@@ -110,15 +110,12 @@ public void getNearbyAttractions() {
 
 	User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 	VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user);
-	log.info("visitedLocation : " +visitedLocation);
-	List<Attraction> attractions = tourGuideService.getNearByAttractions(visitedLocation); //debug le test ne doit pas être modifié
-	log.info("attractions : " +attractions);
-	log.info("visitedLocation après  List<Attraction> attractions =...: " +visitedLocation);
-	tourGuideService.tracker.stopTracking();
-	log.info("attractions après tourGuideService.tracker.stopTracking(); " +attractions);
-	log.info("visitedLocation après  tourGuideService.tracker.stopTracking(); " +visitedLocation);
 
-	assertEquals(5,attractions.size()); //attractions.size = 1 (également sur TestRewardsService nearAllByAttractions)
+	List<Attraction> attractions = tourGuideService.getNearByAttractions(visitedLocation); //debug, ne pas changer le test
+
+	tourGuideService.tracker.stopTracking();
+
+	assertEquals(5, attractions.size());
 
 }
 
