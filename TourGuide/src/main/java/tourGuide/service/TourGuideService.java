@@ -121,17 +121,18 @@ public class TourGuideService {
 //			}
 //		}
 	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
-		List<Attraction> nearbyFiveAttractions = new ArrayList<>();
-		for (Attraction attraction : gpsUtil.getAttractions()) {
-			if (rewardsService.nearAttraction(visitedLocation, attraction));
-			nearbyFiveAttractions = gpsUtil.getAttractions()
+		List<Attraction> nearbyFiveAttractions =
+			 gpsUtil.getAttractions()
 					.stream()
-					.sorted(Comparator.comparing(o -> rewardsService.nearAttraction(visitedLocation, attraction)))
+					.sorted(Comparator.comparing(attraction -> rewardsService.nearAttraction(visitedLocation, attraction)))
 					.limit(5)
 					.collect(Collectors.toList());
-			}
-			return nearbyFiveAttractions;
-		}
+
+		return nearbyFiveAttractions;
+
+	}
+
+
 
 
 

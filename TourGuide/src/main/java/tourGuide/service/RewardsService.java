@@ -37,6 +37,21 @@ public class RewardsService {
 		proximityBuffer = defaultProximityBuffer;
 	}
 	
+	public void calculateRewards(User user) {
+		List<VisitedLocation> userLocations = user.getVisitedLocations();
+		List<Attraction> attractions = gpsUtil.getAttractions();
+
+		for(VisitedLocation visitedLocation : userLocations) {
+			for(Attraction attraction : attractions) {
+//				if(user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
+					if(nearAttraction(visitedLocation, attraction)) {//faire une deuxieme methpde pour ne pas faire une boucle qui se termine pas car ca ajoute une attraction et ca steeam en meme temps
+						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+					}
+				}
+			}
+		}
+//	}
+
 //	public void calculateRewards(User user) {
 //		List<VisitedLocation> userLocations = user.getVisitedLocations();
 //		List<Attraction> attractions = gpsUtil.getAttractions();
@@ -44,34 +59,19 @@ public class RewardsService {
 //		for(VisitedLocation visitedLocation : userLocations) {
 //			for(Attraction attraction : attractions) {
 //				if(user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
-//					if(nearAttraction(visitedLocation, attraction)) {//faire une deuxieme methpde pour ne pas faire une boucle qui se termine pas car ca ajoute une attraction et ca steeam en meme temps
-//						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
-//					}
+//					methodToDo(user, visitedLocation);
 //				}
 //			}
 //		}
 //	}
-
-	public void calculateRewards(User user) {
-		List<VisitedLocation> userLocations = user.getVisitedLocations();
-		List<Attraction> attractions = gpsUtil.getAttractions();
-
-		for(VisitedLocation visitedLocation : userLocations) {
-			for(Attraction attraction : attractions) {
-				if(user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
-					methodToDo(user, visitedLocation);
-				}
-			}
-		}
-	}
-
-	public void methodToDo(User user, VisitedLocation visitedLocation) {
-		for(Attraction attraction : gpsUtil.getAttractions()) {
-					if (nearAttraction(visitedLocation, attraction)) {
-					user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
-				}
-			}
-	}
+//
+//	public void methodToDo(User user, VisitedLocation visitedLocation) {
+//		for(Attraction attraction : gpsUtil.getAttractions()) {
+//					if (nearAttraction(visitedLocation, attraction)) {
+//					user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+//				}
+//			}
+//	}
 
 	
 	public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
