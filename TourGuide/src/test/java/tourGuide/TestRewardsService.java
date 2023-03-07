@@ -67,26 +67,18 @@ public class TestRewardsService {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		rewardsService.setProximityBuffer(Integer.MAX_VALUE);
-		//gpsUtil et rewardsCentral = no field display
 
 		InternalTestHelper.setInternalUserNumber(1);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
-////add
-//		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-//		List<VisitedLocation> userLocations = user.getVisitedLocations();
-////		List<Attraction> attractions = gpsUtil.getAttractions();
-//		Attraction attraction = gpsUtil.getAttractions().get(0);
-//		user.addToVisitedLocations(new VisitedLocation(user.getUserId(), attraction, new Date()));
+
 
 
 		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
 		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
 		tourGuideService.tracker.stopTracking();
-//		private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
-//			return getDistance(attraction, visitedLocation.location) > proximityBuffer ? false : true;
-//		}
+
 		assertEquals(gpsUtil.getAttractions().size(), userRewards.size()); // Corriger le test, exception aléatoire Concurrent...
-		// le pb c'est qu'il y a une liste qui est appellée et qui est settée en même temps
+		// ConcurrentModificationException => le pb c'est qu'il y a une liste qui est appellée et qui est settée en même temps
 	}
 
 	@Test
@@ -105,7 +97,6 @@ public class TestRewardsService {
 		user.addToVisitedLocations(new VisitedLocation(user.getUserId(), attraction, new Date()));
 
 		rewardsService.calculateRewards(user);
-		List<UserReward> userRewards = tourGuideService.getUserRewards(user);
 
 		tourGuideService.tracker.stopTracking();
 
