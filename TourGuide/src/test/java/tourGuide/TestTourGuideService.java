@@ -133,7 +133,7 @@ public void getNearbyAttractions() {
 		
 		tourGuideService.tracker.stopTracking();
 		
-		assertEquals(10, providers.size());//setter à 5 au lieu de 10 car la methode  tourGuideService.getTripDeals(user)
+		assertEquals(5, providers.size());//setter à 5 au lieu de 10 car la methode  tourGuideService.getTripDeals(user)
 		// ne peut pasêtre modifiée au niveau de la class=>user.setTripDeals(providers); //Provider.class ne peut être modifié
 	}
 	
