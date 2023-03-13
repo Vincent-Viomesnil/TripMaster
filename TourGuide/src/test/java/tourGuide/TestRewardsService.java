@@ -71,13 +71,13 @@ public class TestRewardsService {
 		InternalTestHelper.setInternalUserNumber(1);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
-
-
 		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
 		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
 		tourGuideService.tracker.stopTracking();
 
-		assertEquals(gpsUtil.getAttractions().size(), userRewards.size()); // Corriger le test, exception aléatoire Concurrent...
+		assertEquals(gpsUtil.getAttractions().size(), userRewards.size());  // assertEquals(26,31)
+
+		// Corriger le test, exception aléatoire Concurrent...
 		// ConcurrentModificationException => le pb c'est qu'il y a une liste qui est appellée et qui est settée en même temps
 	}
 
