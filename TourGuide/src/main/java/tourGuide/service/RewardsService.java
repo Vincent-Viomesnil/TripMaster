@@ -38,12 +38,15 @@ public class RewardsService {
 	}
 	
 	public void calculateRewards(User user) {
-		List<VisitedLocation> userLocations = user.getVisitedLocations(); //size =4
+		List<VisitedLocation> userLocations = user.getVisitedLocations(); //size =4 (dès le début)
 		List<Attraction> attractions = gpsUtil.getAttractions();
 
-		for(VisitedLocation visitedLocation : userLocations) {
+		for(VisitedLocation visitedLocation : userLocations) {//size = 4 puis size = 5
 			for(Attraction attraction : attractions) {
-				if(user.getUserRewards().stream().noneMatch(r -> r.attraction.attractionName.equals(attraction.attractionName))) { //voir logique côté USER
+				if(user.getUserRewards().stream().noneMatch(r -> r.attraction.attractionName.equals(attraction.attractionName))) {
+					//voir logique côté USER
+					// userRewards = 26 //location de la visitedLocation est la même sur les 26.
+					// Et ensuite ça revient à la 1ere valeur de visitedLocation?
 					if(nearAttraction(visitedLocation, attraction)) {//faire une deuxieme methode pour ne pas faire une boucle qui se termine pas car ca ajoute une attraction et ca steeam en meme temps
 						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
 //						methodToDo(user, visitedLocation);
