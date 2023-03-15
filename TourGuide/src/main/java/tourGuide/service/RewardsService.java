@@ -38,10 +38,10 @@ public class RewardsService {
 	}
 	
 	public void calculateRewards(User user) {
-		List<VisitedLocation> userLocations = user.getVisitedLocations(); //size =4 (dès le début)
+		List<VisitedLocation> userLocations = user.getVisitedLocations(); //size =3 (dès le début) puis sie = 4 (4 locations différentes) puis 9
 		List<Attraction> attractions = gpsUtil.getAttractions();
 
-		for(VisitedLocation visitedLocation : userLocations) {//size = 4 puis size = 5
+		for(VisitedLocation visitedLocation : userLocations) {//size = 4 puis size = 5 (après être passé dans le 1er if) puis 9
 			for(Attraction attraction : attractions) {
 				if(user.getUserRewards().stream().noneMatch(r -> r.attraction.attractionName.equals(attraction.attractionName))) {
 					//voir logique côté USER
