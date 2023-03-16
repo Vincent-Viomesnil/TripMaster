@@ -45,7 +45,7 @@ public class TourGuideService {
 <span class="fc" id="L45">	}</span>
 	
 	public List&lt;UserReward&gt; getUserRewards(User user) {
-<span class="nc" id="L48">		return user.getUserRewards();</span>
+<span class="fc" id="L48">		return user.getUserRewards();</span>
 	}
 	
 	public VisitedLocation getUserLocation(User user) {
@@ -54,40 +54,42 @@ public class TourGuideService {
 <span class="nc" id="L54">			trackUserLocation(user);</span>
 <span class="nc" id="L55">		return visitedLocation;</span>
 	}
+
+
+	public VisitedLocation trackUserLocation(User user) {
+<span class="fc" id="L60">		VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());</span>
+<span class="fc" id="L61">		user.addToVisitedLocations(visitedLocation);</span>
+<span class="fc" id="L62">		rewardsService.calculateRewards(user);</span>
+<span class="fc" id="L63">		return visitedLocation;</span>
+	}
 	
 	public User getUser(String userName) {
-<span class="fc" id="L59">		return internalUserMap.get(userName);</span>
+<span class="nc" id="L67">		return internalUserMap.get(userName);</span>
 	}
 	
 	public List&lt;User&gt; getAllUsers() {
-<span class="fc" id="L63">		return internalUserMap.values().stream().collect(Collectors.toList());</span>
+<span class="fc" id="L71">		return internalUserMap.values().stream().collect(Collectors.toList());</span>
 	}
 	
 	public void addUser(User user) {
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">		if(!internalUserMap.containsKey(user.getUserName())) {</span>
-<span class="fc" id="L68">			internalUserMap.put(user.getUserName(), user);</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">		if(!internalUserMap.containsKey(user.getUserName())) {</span>
+<span class="nc" id="L76">			internalUserMap.put(user.getUserName(), user);</span>
 		}
-<span class="fc" id="L70">	}</span>
+<span class="nc" id="L78">	}</span>
 	
 	public List&lt;Provider&gt; getTripDeals(User user) {
-<span class="pc" id="L73">		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
-<span class="fc" id="L74">		List&lt;Provider&gt; providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), </span>
-<span class="fc" id="L75">				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);</span>
+<span class="nc" id="L81">		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
+<span class="nc" id="L82">		List&lt;Provider&gt; providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), </span>
+<span class="nc" id="L83">				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);</span>
 
 //		providers.addAll(tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(),
 //				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints));
 // Si besoin de setter la list de providers à 10
-<span class="fc" id="L80">		user.setTripDeals(providers);</span>
+<span class="nc" id="L88">		user.setTripDeals(providers);</span>
 		//Provider.class ne peut être modifié
-<span class="fc" id="L82">		return providers;</span>
+<span class="nc" id="L90">		return providers;</span>
 	}
-	
-	public VisitedLocation trackUserLocation(User user) {
-<span class="fc" id="L86">		VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());</span>
-<span class="fc" id="L87">		user.addToVisitedLocations(visitedLocation);</span>
-<span class="fc" id="L88">		rewardsService.calculateRewards(user);</span>
-<span class="fc" id="L89">		return visitedLocation;</span>
-	}
+
 
 
 //	public List&lt;Attraction&gt; getNearByAttractions(VisitedLocation visitedLocation) {
@@ -126,14 +128,14 @@ public class TourGuideService {
 //			}
 //		}
 	public List&lt;Attraction&gt; getNearByAttractions(VisitedLocation visitedLocation) {
-<span class="fc" id="L129">		List&lt;Attraction&gt; nearbyFiveAttractions =</span>
-<span class="fc" id="L130">			 gpsUtil.getAttractions()</span>
-<span class="fc" id="L131">					.stream()</span>
-<span class="fc" id="L132">					.sorted(Comparator.comparing(attraction -&gt; rewardsService.nearAttraction(visitedLocation, attraction)))</span>
-<span class="fc" id="L133">					.limit(5)</span>
-<span class="fc" id="L134">					.collect(Collectors.toList());</span>
+<span class="nc" id="L131">		List&lt;Attraction&gt; nearbyFiveAttractions =</span>
+<span class="nc" id="L132">			 gpsUtil.getAttractions()</span>
+<span class="nc" id="L133">					.stream()</span>
+<span class="nc" id="L134">					.sorted(Comparator.comparing(attraction -&gt; rewardsService.nearAttraction(visitedLocation, attraction)))</span>
+<span class="nc" id="L135">					.limit(5)</span>
+<span class="nc" id="L136">					.collect(Collectors.toList());</span>
 
-<span class="fc" id="L136">		return nearbyFiveAttractions;</span>
+<span class="nc" id="L138">		return nearbyFiveAttractions;</span>
 
 	}
 
@@ -142,12 +144,12 @@ public class TourGuideService {
 
 
    private void addShutDownHook() {
-<span class="fc" id="L145">			Runtime.getRuntime().addShutdownHook(new Thread() {</span>
+<span class="fc" id="L147">			Runtime.getRuntime().addShutdownHook(new Thread() {</span>
 				public void run() {
-<span class="fc" id="L147">					tracker.stopTracking();</span>
-<span class="fc" id="L148">				}</span>
+<span class="fc" id="L149">					tracker.stopTracking();</span>
+<span class="fc" id="L150">				}</span>
 			});
-<span class="fc" id="L150">		}</span>
+<span class="fc" id="L152">		}</span>
 
    /**********************************************************************************
     *
@@ -156,41 +158,41 @@ public class TourGuideService {
     **********************************************************************************/
 	private static final String tripPricerApiKey = &quot;test-server-api-key&quot;;
 	// Database connection will be used for external users, but for testing purposes internal users are provided and stored in memory
-<span class="fc" id="L159">	private final Map&lt;String, User&gt; internalUserMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L161">	private final Map&lt;String, User&gt; internalUserMap = new HashMap&lt;&gt;();</span>
 	private void initializeInternalUsers() {
-<span class="fc" id="L161">		IntStream.range(0, InternalTestHelper.getInternalUserNumber()).forEach(i -&gt; {</span>
-<span class="fc" id="L162">			String userName = &quot;internalUser&quot; + i;</span>
-<span class="fc" id="L163">			String phone = &quot;000&quot;;</span>
-<span class="fc" id="L164">			String email = userName + &quot;@tourGuide.com&quot;;</span>
-<span class="fc" id="L165">			User user = new User(UUID.randomUUID(), userName, phone, email);</span>
-<span class="fc" id="L166">			generateUserLocationHistory(user);</span>
+<span class="fc" id="L163">		IntStream.range(0, InternalTestHelper.getInternalUserNumber()).forEach(i -&gt; {</span>
+<span class="fc" id="L164">			String userName = &quot;internalUser&quot; + i;</span>
+<span class="fc" id="L165">			String phone = &quot;000&quot;;</span>
+<span class="fc" id="L166">			String email = userName + &quot;@tourGuide.com&quot;;</span>
+<span class="fc" id="L167">			User user = new User(UUID.randomUUID(), userName, phone, email);</span>
+<span class="fc" id="L168">			generateUserLocationHistory(user);</span>
 			
-<span class="fc" id="L168">			internalUserMap.put(userName, user);</span>
-<span class="fc" id="L169">		});</span>
-<span class="fc" id="L170">		logger.debug(&quot;Created &quot; + InternalTestHelper.getInternalUserNumber() + &quot; internal test users.&quot;);</span>
-<span class="fc" id="L171">	}</span>
+<span class="fc" id="L170">			internalUserMap.put(userName, user);</span>
+<span class="fc" id="L171">		});</span>
+<span class="fc" id="L172">		logger.debug(&quot;Created &quot; + InternalTestHelper.getInternalUserNumber() + &quot; internal test users.&quot;);</span>
+<span class="fc" id="L173">	}</span>
 	
 	private void generateUserLocationHistory(User user) {
-<span class="fc" id="L174">		IntStream.range(0, 3).forEach(i-&gt; {</span>
-<span class="fc" id="L175">			user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));</span>
-<span class="fc" id="L176">		});</span>
-<span class="fc" id="L177">	}</span>
+<span class="fc" id="L176">		IntStream.range(0, 3).forEach(i-&gt; {</span>
+<span class="fc" id="L177">			user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));</span>
+<span class="fc" id="L178">		});</span>
+<span class="fc" id="L179">	}</span>
 	
 	private double generateRandomLongitude() {
-<span class="fc" id="L180">		double leftLimit = -180;</span>
-<span class="fc" id="L181">	    double rightLimit = 180;</span>
-<span class="fc" id="L182">	    return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);</span>
+<span class="fc" id="L182">		double leftLimit = -180;</span>
+<span class="fc" id="L183">	    double rightLimit = 180;</span>
+<span class="fc" id="L184">	    return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);</span>
 	}
 	
 	private double generateRandomLatitude() {
-<span class="fc" id="L186">		double leftLimit = -85.05112878;</span>
-<span class="fc" id="L187">	    double rightLimit = 85.05112878;</span>
-<span class="fc" id="L188">	    return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);</span>
+<span class="fc" id="L188">		double leftLimit = -85.05112878;</span>
+<span class="fc" id="L189">	    double rightLimit = 85.05112878;</span>
+<span class="fc" id="L190">	    return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);</span>
 	}
 	
 	private Date getRandomTime() {
-<span class="fc" id="L192">		LocalDateTime localDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));</span>
-<span class="fc" id="L193">	    return Date.from(localDateTime.toInstant(ZoneOffset.UTC));</span>
+<span class="fc" id="L194">		LocalDateTime localDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));</span>
+<span class="fc" id="L195">	    return Date.from(localDateTime.toInstant(ZoneOffset.UTC));</span>
 	}
 	
 }

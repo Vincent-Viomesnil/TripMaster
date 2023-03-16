@@ -54,6 +54,14 @@ public class TourGuideService {
 			trackUserLocation(user);
 		return visitedLocation;
 	}
+
+
+	public VisitedLocation trackUserLocation(User user) {
+		VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
+		user.addToVisitedLocations(visitedLocation);
+		rewardsService.calculateRewards(user);
+		return visitedLocation;
+	}
 	
 	public User getUser(String userName) {
 		return internalUserMap.get(userName);
@@ -81,13 +89,7 @@ public class TourGuideService {
 		//Provider.class ne peut être modifié
 		return providers;
 	}
-	
-	public VisitedLocation trackUserLocation(User user) {
-		VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
-		user.addToVisitedLocations(visitedLocation);
-		rewardsService.calculateRewards(user);
-		return visitedLocation;
-	}
+
 
 
 //	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
