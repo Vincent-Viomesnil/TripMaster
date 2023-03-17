@@ -8,6 +8,7 @@ import gpsUtil.GpsUtil;
 import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
+import org.w3c.dom.Attr;
 import rewardCentral.RewardCentral;
 import tourGuide.user.User;
 import tourGuide.user.UserReward;
@@ -20,8 +21,10 @@ public class RewardsService {
     private int defaultProximityBuffer = 10;
 	private int proximityBuffer = defaultProximityBuffer;
 	private int attractionProximityRange = 200;
-	private final GpsUtil gpsUtil;
+	private GpsUtil gpsUtil;
 	private final RewardCentral rewardsCentral;
+
+
 	
 	public RewardsService(GpsUtil gpsUtil, RewardCentral rewardCentral) {
 		this.gpsUtil = gpsUtil;
@@ -35,28 +38,50 @@ public class RewardsService {
 	public void setDefaultProximityBuffer() {
 		proximityBuffer = defaultProximityBuffer;
 	}
-	
+
 	public void calculateRewards(User user) {
-		List<VisitedLocation> userLocations = user.getVisitedLocations();
 		List<Attraction> attractions = gpsUtil.getAttractions();
-		
-		for(VisitedLocation visitedLocation : userLocations) {
-			for(Attraction attraction : attractions) {
-				if(user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
-					if(nearAttraction(visitedLocation, attraction)) {
+		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
+		for (VisitedLocation visitedLocation : userVisitedLocations) {
+			System.out.println("Test 11");
+			for (Attraction attraction : attractions) {
+				System.out.println("Avant condition if " + attraction);
+				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName.equals(attraction.attractionName))) {
+					if (nearAttraction(visitedLocation, attraction)) {
 						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
 					}
 				}
 			}
 		}
 	}
-	
+//public void calculateRewards(User user) {
+//	List<Attraction> attractions = gpsUtil.getAttractions();
+//	System.out.println("Test 11");
+//	for (Attraction attraction : attractions) {
+//		System.out.println("Avant condition if " + attraction);
+//		if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName.equals(attraction.attractionName))) {
+//			System.out.println("Avant methotodo " + attraction);
+//			methodToDo(user, attraction);
+////			System.out.println("Apres " + attraction);
+//		}
+//	}
+//}
+//
+//	public void methodToDo(User user, Attraction attraction) {
+//		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
+//		for(VisitedLocation visitedLocation : userVisitedLocations) {
+//					if (nearAttraction(visitedLocation, attraction)) {
+//					user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+//				}
+//			}
+//	}
+
 	public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
-		return getDistance(attraction, location) > attractionProximityRange ? false : true;
+		return (getDistance(attraction, location) < attractionProximityRange);
 	}
-	
-	private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
-		return getDistance(attraction, visitedLocation.location) > proximityBuffer ? false : true;
+
+	public boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
+		return (getDistance(attraction, visitedLocation.location) < proximityBuffer);
 	}
 	
 	private int getRewardPoints(Attraction attraction, User user) {
