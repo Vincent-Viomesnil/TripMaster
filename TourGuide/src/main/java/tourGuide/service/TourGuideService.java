@@ -135,10 +135,7 @@ public class TourGuideService {
 					.collect(Collectors.toList());
 
 		return nearbyFiveAttractions;
-
 	}
-
-
 
 
 
@@ -191,5 +188,5 @@ public class TourGuideService {
 		LocalDateTime localDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));
 	    return Date.from(localDateTime.toInstant(ZoneOffset.UTC));
 	}
-	
+
 }
