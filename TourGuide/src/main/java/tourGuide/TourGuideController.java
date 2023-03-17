@@ -37,9 +37,6 @@ public class TourGuideController {
 // The distance in miles between the user's location and each of the attractions.
 // The reward points for visiting each Attraction.
         return JsonStream.serialize(fiveNearAttractions);
-
-
-
     }
     
     //  TODO: Change this method to no longer return a List of Attractions.

@@ -48,9 +48,9 @@ public class TourGuideService {
 	}
 	
 	public VisitedLocation getUserLocation(User user) {
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">		VisitedLocation visitedLocation = (user.getVisitedLocations().size() &gt; 0) ?</span>
-<span class="pc" id="L52">			user.getLastVisitedLocation() :</span>
-<span class="pc" id="L53">			trackUserLocation(user);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">		VisitedLocation visitedLocation = (user.getVisitedLocations().size() &gt; 0) ?</span>
+<span class="fc" id="L52">			user.getLastVisitedLocation() :</span>
+<span class="fc" id="L53">			trackUserLocation(user);</span>
 <span class="fc" id="L54">		return visitedLocation;</span>
 	}
 
