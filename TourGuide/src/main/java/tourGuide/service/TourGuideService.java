@@ -89,6 +89,14 @@ public class TourGuideService {
 		return providers;
 	}
 
+	public List<Attraction> getAttractions(User user) {
+		List<Attraction> attractionList = user.getAttractions();
+		user.setAttractionList(attractionList);
+
+		return attractionList;
+	}
+
+
 
 
 //	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
