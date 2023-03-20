@@ -89,14 +89,20 @@ public class TourGuideService {
 		return providers;
 	}
 
-	public List<Attraction> getAttractions(User user) {
-		List<Attraction> attractionList = user.getAttractions();
-		user.setAttractionList(attractionList);
+//	public List<Attraction> getAttractions(User user) {
+//		List<Attraction> attractionList = user.getAttractions(user.getAttraction().attractionName,user.getAttraction().city,user.getAttraction().state,user.getAttraction().latitude,user.getAttraction().longitude);
+//		user.setAttractionList(attractionList);
+//
+//		return attractionList;
+//	}
 
-		return attractionList;
-	}
-
-
+//	public List<Attraction> getAttractions(User user) {
+//		List<Attraction> attractionList = user.getAttractions(user.getAttraction().attractionName,
+//				user.getAttraction().city,user.getAttraction().state,user.getAttraction().latitude,user.getAttraction().longitude);
+//		user.setAttractionList(attractionList);
+//
+//		return attractionList;
+//	}
 
 
 //	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
@@ -143,6 +149,15 @@ public class TourGuideService {
 					.collect(Collectors.toList());
 
 		return nearbyFiveAttractions;
+	}
+	public List<Attraction> getAttractions(VisitedLocation visitedLocation) {
+		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
+		List<Attraction> attractionList = tourGuideService.getNearByAttractions(visitedLocation);
+		for (Attraction attraction : attractionList) {
+			System.out.print("attraction "+ attraction);
+		}
+
+		return attractionList;
 	}
 
 

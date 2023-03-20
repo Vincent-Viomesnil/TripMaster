@@ -37,19 +37,19 @@ public class User {
 		this.phoneNumber = phoneNumber;
 		this.emailAddress = emailAddress;
 	}
-	
+
 	public UUID getUserId() {
 		return userId;
 	}
-	
+
 	public String getUserName() {
 		return userName;
 	}
-	
+
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -57,33 +57,35 @@ public class User {
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
-	
+
 	public String getEmailAddress() {
 		return emailAddress;
 	}
-	
+
 	public void setLatestLocationTimestamp(Date latestLocationTimestamp) {
 		this.latestLocationTimestamp = latestLocationTimestamp;
 	}
-	
+
 	public Date getLatestLocationTimestamp() {
 		return latestLocationTimestamp;
 	}
-	
+
 	public void addToVisitedLocations(VisitedLocation visitedLocation) {
 		visitedLocations.add(visitedLocation);
 	}
-	
+
 	public List<VisitedLocation> getVisitedLocations() {
 		return visitedLocations;
 	}
+
 	public void setAttraction(Attraction attraction) {
 		this.attraction = attraction;
 	}
+
 	public Attraction getAttraction() {
-		return  attraction;
+		return attraction;
 	}
-	
+
 	public void clearVisitedLocations() {
 		visitedLocations.clear();
 	}
@@ -92,17 +94,17 @@ public class User {
 //		if(userRewards.stream().filter(r -> r.attraction.attractionName.equals(userReward.attraction.attractionName)).count() == 0) {
 ////		if(userRewards.stream().filter(r -> !r.attraction.attractionName.equals(userReward.attraction)).count() == 0)
 		userRewards.add(userReward);
-		}
+	}
 //}
-	
+
 	public List<UserReward> getUserRewards() {
 		return userRewards;
 	}
-	
+
 	public UserPreferences getUserPreferences() {
 		return userPreferences;
 	}
-	
+
 	public void setUserPreferences(UserPreferences userPreferences) {
 		this.userPreferences = userPreferences;
 	}
@@ -114,7 +116,7 @@ public class User {
 	public void setTripDeals(List<Provider> tripDeals) {
 		this.tripDeals = tripDeals;
 	}
-	
+
 	public List<Provider> getTripDeals() {
 		return tripDeals;
 	}
@@ -122,17 +124,19 @@ public class User {
 	public void setAttractionList(List<Attraction> attractionList) {
 		this.attractionList = attractionList;
 	}
-//	public List<Attraction> getAttractions(String attractionName, String attractionCity, String attractionState, double attractionLatitude, double attractionLongitude) {
-//		Attraction attraction = new Attraction(attractionName, attractionCity, attractionState,attractionLatitude, attractionLongitude);
-//		List<Attraction> attractionList = new ArrayList<>();
-//
-//		attractionList.add(attraction);
-//
-//		return attractionList;
-//
-//	}
 
-	public List<Attraction> getAttractions(){
+	public List<Attraction> getAttractions(String attractionName, String attractionCity, String attractionState, double attractionLatitude, double attractionLongitude) {
+		Attraction attraction = new Attraction(attractionName, attractionCity, attractionState, attractionLatitude, attractionLongitude);
+		List<Attraction> attractionList = new ArrayList<>();
+
+		attractionList.add(attraction);
+
 		return attractionList;
+
 	}
 }
+//
+//	public List<Attraction> getAttractions(){
+//		return attractionList;
+//	}
+//}

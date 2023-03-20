@@ -51,8 +51,8 @@ public class TourGuideController {
 
     @RequestMapping("/getLocation")
     public String getLocation(@RequestParam String userName) {
-        List<Attraction> fiveNearAttractions = tourGuideService.getAttractions(getUser(userName));
-        return JsonStream.serialize(fiveNearAttractions);
+        List<Attraction> fiveTouristAttractions = tourGuideService.getAttractions(getUser(userName).getLastVisitedLocation());
+        return JsonStream.serialize(fiveTouristAttractions);
     }
     @RequestMapping("/getNearbyAttractions") 
     public String getNearbyAttractions(@RequestParam String userName) {
