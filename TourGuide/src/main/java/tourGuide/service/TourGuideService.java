@@ -161,10 +161,11 @@ public class TourGuideService {
 			userFive1.setAttractionName(attraction.attractionName);
 			userFive1.setAttractionLatitude(attraction.latitude);
 			userFive1.setAttractionLongitude(attraction.longitude);
-			userFive1.setLocation(visitedLocation.location);
-
+			userFive1.setVisitedLatitude(visitedLocation.location.latitude);
+			userFive1.setVisitedLongitude(visitedLocation.location.longitude);
+//			userFive1.setAttractionLongitude(visitedLocation.location.longitude);
+			userFive1.getDistanceUserFive(attraction, visitedLocation);
 			userFiveList.add(userFive1);
-			System.out.print("attraction "+ attraction);
 		}
 
 		return userFiveList;

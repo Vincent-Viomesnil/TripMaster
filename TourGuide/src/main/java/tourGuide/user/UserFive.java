@@ -7,12 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tripPricer.Provider;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,22 +15,35 @@ import java.util.UUID;
 public class UserFive {
 
 
-private String phoneNumber;
-private String emailAddress;
-private Date latestLocationTimestamp;
-private List<VisitedLocation> visitedLocations = new ArrayList<>();
-private List<UserReward> userRewards = new ArrayList<>();
-private rewardCentral.RewardCentral rewardCentral;
 
-private List<Attraction> attractionList = new ArrayList<>();
+//private List<VisitedLocation> visitedLocations = new ArrayList<>();
+//private List<UserReward> userRewards = new ArrayList<>();
+//private rewardCentral.RewardCentral rewardCentral;
+
+
 private Attraction attraction;
-
+private Location location;
+private VisitedLocation visitedLocation;
 private String attractionName;
-private String attractionCity;
-private String attractionState;
 private double attractionLatitude;
 private double attractionLongitude;
-private Location location;
+private double visitedLatitude;
+private double visitedLongitude;
+
+
+
+    //    The distance in miles between the user's location and each of the attractions
+public double getDistanceUserFive(Attraction attraction, VisitedLocation visitedLocation) {
+    Attraction attractionDouble = attraction;
+    Location visitedLocationDouble = visitedLocation.location;
+    double distanceLatitudeUserFive = visitedLocationDouble.latitude - attraction.latitude;
+    double distanceLongitudeUserFive = visitedLocationDouble.longitude - attraction.longitude;
+
+    System.out.println("distanceLatitude "+ distanceLatitudeUserFive + " et distanceLongitude " +  distanceLongitudeUserFive);
+    return distanceLatitudeUserFive + distanceLongitudeUserFive;
+}
+
+
 
 //    public User(UUID userId, String userName, String phoneNumber, String emailAddress) {
 //        this.userId = userId;
