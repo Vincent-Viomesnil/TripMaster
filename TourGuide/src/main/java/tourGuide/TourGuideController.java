@@ -13,6 +13,7 @@ import com.jsoniter.output.JsonStream;
 import gpsUtil.location.VisitedLocation;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.User;
+import tourGuide.user.UserFive;
 import tripPricer.Provider;
 
 @RestController
@@ -51,7 +52,7 @@ public class TourGuideController {
 
     @RequestMapping("/getLocation")
     public String getLocation(@RequestParam String userName) {
-        List<Attraction> fiveTouristAttractions = tourGuideService.getAttractions(getUser(userName).getLastVisitedLocation());
+        List<UserFive> fiveTouristAttractions = tourGuideService.getAttractions(getUser(userName).getLastVisitedLocation());
         return JsonStream.serialize(fiveTouristAttractions);
     }
     @RequestMapping("/getNearbyAttractions") 

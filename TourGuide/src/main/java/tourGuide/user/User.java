@@ -134,6 +134,7 @@ public class User {
 		return attractionList;
 
 	}
+
 }
 //
 //	public List<Attraction> getAttractions(){

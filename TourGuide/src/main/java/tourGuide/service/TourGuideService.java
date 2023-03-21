@@ -17,6 +17,7 @@ import gpsUtil.location.VisitedLocation;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.tracker.Tracker;
 import tourGuide.user.User;
+import tourGuide.user.UserFive;
 import tourGuide.user.UserReward;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
@@ -28,6 +29,7 @@ public class TourGuideService {
 	private final RewardsService rewardsService;
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
+//	private UserFive userFive;
 	boolean testMode = true;
 	
 	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {
@@ -150,14 +152,22 @@ public class TourGuideService {
 
 		return nearbyFiveAttractions;
 	}
-	public List<Attraction> getAttractions(VisitedLocation visitedLocation) {
+	public List<UserFive> getAttractions(VisitedLocation visitedLocation) {
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 		List<Attraction> attractionList = tourGuideService.getNearByAttractions(visitedLocation);
+		List<UserFive> userFiveList = new ArrayList<>();
 		for (Attraction attraction : attractionList) {
+			UserFive userFive1 = new UserFive();
+			userFive1.setAttractionName(attraction.attractionName);
+			userFive1.setAttractionLatitude(attraction.latitude);
+			userFive1.setAttractionLongitude(attraction.longitude);
+			userFive1.setLocation(visitedLocation.location);
+
+			userFiveList.add(userFive1);
 			System.out.print("attraction "+ attraction);
 		}
 
-		return attractionList;
+		return userFiveList;
 	}
 
 
