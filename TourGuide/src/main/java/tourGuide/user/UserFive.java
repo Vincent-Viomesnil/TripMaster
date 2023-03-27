@@ -20,10 +20,9 @@ public class UserFive {
 //private List<UserReward> userRewards = new ArrayList<>();
 //private rewardCentral.RewardCentral rewardCentral;
 
-
-private Attraction attraction;
-private Location location;
-private VisitedLocation visitedLocation;
+//private Location location;
+//private Attraction attraction;
+//private VisitedLocation visitedLocation;
 private String attractionName;
 private double attractionLatitude;
 private double attractionLongitude;
@@ -39,7 +38,7 @@ public double getDistanceUserFive(Attraction attraction, VisitedLocation visited
     double distanceLatitudeUserFive = visitedLocationDouble.latitude - attraction.latitude;
     double distanceLongitudeUserFive = visitedLocationDouble.longitude - attraction.longitude;
 
-    System.out.println("distanceLatitude "+ distanceLatitudeUserFive + " et distanceLongitude " +  distanceLongitudeUserFive);
+//    System.out.println("distanceLatitude "+ distanceLatitudeUserFive + " et distanceLongitude " +  distanceLongitudeUserFive);
     return distanceLatitudeUserFive + distanceLongitudeUserFive;
 }
 

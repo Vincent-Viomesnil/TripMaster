@@ -27,6 +27,8 @@ public class TourGuideService {
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
 	private final GpsUtil gpsUtil;
 	private final RewardsService rewardsService;
+
+	private UserFiveService userFiveService;
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
 //	private UserFive userFive;
@@ -164,7 +166,7 @@ public class TourGuideService {
 			userFive1.setVisitedLatitude(visitedLocation.location.latitude);
 			userFive1.setVisitedLongitude(visitedLocation.location.longitude);
 //			userFive1.setAttractionLongitude(visitedLocation.location.longitude);
-			userFive1.getDistanceUserFive(attraction, visitedLocation);
+			userFiveService.getDistance(attraction, visitedLocation); //NPE à corriger
 			userFiveList.add(userFive1);
 		}
 
