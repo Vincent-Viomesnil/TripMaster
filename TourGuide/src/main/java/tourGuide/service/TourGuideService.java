@@ -121,7 +121,8 @@ public class TourGuideService {
 		List<Attraction> nearbyFiveAttractions =
 			 gpsUtil.getAttractions()
 					.stream()
-					.sorted(Comparator.comparing(attraction -> rewardsService.nearAttraction(visitedLocation, attraction)))
+					 .sorted(Comparator.comparing(attraction -> rewardsService.getDistance(visitedLocation.location, attraction)))
+//					.sorted(Comparator.comparing(attraction -> rewardsService.nearAttraction(visitedLocation, attraction)))
 					.limit(5)
 					.collect(Collectors.toList());
 
