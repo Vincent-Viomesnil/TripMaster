@@ -20,6 +20,6 @@ private double attractionLongitude;
 private double visitedLatitude;
 private double visitedLongitude;
 private double distanceUser;
-
+private int rewardPoints;
 
 }

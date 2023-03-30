@@ -14,6 +14,7 @@ import gpsUtil.GpsUtil;
 import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
+import rewardCentral.RewardCentral;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.tracker.Tracker;
 import tourGuide.user.User;
@@ -159,12 +160,14 @@ public class TourGuideService {
 		List<UserFive> userFiveList = new ArrayList<>();
 		for (Attraction attraction : attractionList) {
 			UserFive userFive1 = new UserFive();
+			rewardCentral.RewardCentral rewardCentral = new RewardCentral();
 			userFive1.setAttractionName(attraction.attractionName);
 			userFive1.setAttractionLatitude(attraction.latitude);
 			userFive1.setAttractionLongitude(attraction.longitude);
 			userFive1.setVisitedLatitude(visitedLocation.location.latitude);
 			userFive1.setVisitedLongitude(visitedLocation.location.longitude);
-			userFive1.setDistanceUser(rewardsService.getDistance(attraction, visitedLocation.location)); //NPE à corriger
+			userFive1.setDistanceUser(rewardsService.getDistance(attraction, visitedLocation.location));
+			userFive1.setRewardPoints(rewardCentral.getAttractionRewardPoints(attraction.attractionId, visitedLocation.userId));
 			userFiveList.add(userFive1);
 		}
 
