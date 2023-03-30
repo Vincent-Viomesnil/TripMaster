@@ -28,7 +28,6 @@ public class TourGuideService {
 	private final GpsUtil gpsUtil;
 	private final RewardsService rewardsService;
 
-	private UserFiveService userFiveService;
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
 //	private UserFive userFive;
@@ -165,8 +164,7 @@ public class TourGuideService {
 			userFive1.setAttractionLongitude(attraction.longitude);
 			userFive1.setVisitedLatitude(visitedLocation.location.latitude);
 			userFive1.setVisitedLongitude(visitedLocation.location.longitude);
-//			userFive1.setAttractionLongitude(visitedLocation.location.longitude);
-			userFiveService.getDistance(attraction, visitedLocation); //NPE à corriger
+			userFive1.setDistanceUser(rewardsService.getDistance(attraction, visitedLocation.location)); //NPE à corriger
 			userFiveList.add(userFive1);
 		}
 
