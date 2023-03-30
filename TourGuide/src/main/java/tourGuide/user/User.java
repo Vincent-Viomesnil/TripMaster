@@ -21,15 +21,6 @@ public class User {
 	private UserPreferences userPreferences = new UserPreferences();
 	private List<Provider> tripDeals = new ArrayList<>();
 
-	private List<Attraction> attractionList = new ArrayList<>();
-	private Attraction attraction;
-
-	private String attractionName;
-	private String attractionCity;
-	private String attractionState;
-	private double attractionLatitude;
-	private double attractionLongitude;
-	private Location location;
 
 	public User(UUID userId, String userName, String phoneNumber, String emailAddress) {
 		this.userId = userId;
@@ -78,14 +69,6 @@ public class User {
 		return visitedLocations;
 	}
 
-	public void setAttraction(Attraction attraction) {
-		this.attraction = attraction;
-	}
-
-	public Attraction getAttraction() {
-		return attraction;
-	}
-
 	public void clearVisitedLocations() {
 		visitedLocations.clear();
 	}
@@ -121,23 +104,6 @@ public class User {
 		return tripDeals;
 	}
 
-	public void setAttractionList(List<Attraction> attractionList) {
-		this.attractionList = attractionList;
-	}
 
-	public List<Attraction> getAttractions(String attractionName, String attractionCity, String attractionState, double attractionLatitude, double attractionLongitude) {
-		Attraction attraction = new Attraction(attractionName, attractionCity, attractionState, attractionLatitude, attractionLongitude);
-		List<Attraction> attractionList = new ArrayList<>();
-
-		attractionList.add(attraction);
-
-		return attractionList;
-
-	}
 
 }
-//
-//	public List<Attraction> getAttractions(){
-//		return attractionList;
-//	}
-//}

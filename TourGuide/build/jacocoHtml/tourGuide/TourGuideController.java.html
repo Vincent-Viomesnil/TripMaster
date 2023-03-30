@@ -13,55 +13,60 @@ import com.jsoniter.output.JsonStream;
 import gpsUtil.location.VisitedLocation;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.User;
+import tourGuide.user.UserFive;
 import tripPricer.Provider;
 
 @RestController
-<span class="nc" id="L19">public class TourGuideController {</span>
+<span class="nc" id="L20">public class TourGuideController {</span>
 
 	@Autowired
 	TourGuideService tourGuideService;
 	
     @RequestMapping(&quot;/&quot;)
     public String index() {
-<span class="nc" id="L26">        return &quot;Greetings from TourGuide!&quot;;</span>
+<span class="nc" id="L27">        return &quot;Greetings from TourGuide!&quot;;</span>
     }
     
+//    @RequestMapping(&quot;/getLocation&quot;)
+//    public String getLocation(@RequestParam String userName) {
+////    	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
+////		return JsonStream.serialize(visitedLocation.location);
+//        List&lt;Attraction&gt; fiveNearAttractions = tourGuideService.getNearByAttractions(tourGuideService.getUserLocation(getUser(userName)));
+//// Name of Tourist attraction,
+//// Tourist attractions lat/long,
+//// The user's location lat/long, // getUser(userName).getLastVisitedLocation().location);
+//// The distance in miles between the user's location and each of the attractions.
+//// The reward points for visiting each Attraction.
+//        return JsonStream.serialize(fiveNearAttractions);
+//    }
+//
+//      TODO: Change this method to no longer return a List of Attractions.
+// 	  Instead: Get the closest five tourist attractions to the user - no matter how far away they are.
+// 	  Return a new JSON object that contains:
+//    	 Name of Tourist attraction,
+//         Tourist attractions lat/long,
+//         The user's location lat/long,
+//         The distance in miles between the user's location and each of the attractions.
+//         The reward points for visiting each Attraction.
+//            Note: Attraction reward points can be gathered from RewardsCentral
+
     @RequestMapping(&quot;/getLocation&quot;)
     public String getLocation(@RequestParam String userName) {
-//    	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
-//		return JsonStream.serialize(visitedLocation.location);
-<span class="nc" id="L33">        List&lt;Attraction&gt; fiveNearAttractions = tourGuideService.getNearByAttractions(tourGuideService.getUserLocation(getUser(userName)));</span>
-// Name of Tourist attraction,
-// Tourist attractions lat/long,
-// The user's location lat/long, // getUser(userName).getLastVisitedLocation().location);
-// The distance in miles between the user's location and each of the attractions.
-// The reward points for visiting each Attraction.
-<span class="nc" id="L39">        return JsonStream.serialize(fiveNearAttractions);</span>
+<span class="nc" id="L55">        List&lt;UserFive&gt; fiveTouristAttractions = tourGuideService.getAttractions(getUser(userName).getLastVisitedLocation());</span>
+<span class="nc" id="L56">        return JsonStream.serialize(fiveTouristAttractions);</span>
     }
-    
-    //  TODO: Change this method to no longer return a List of Attractions.
- 	//  Instead: Get the closest five tourist attractions to the user - no matter how far away they are.
- 	//  Return a new JSON object that contains:
-    	// Name of Tourist attraction, 
-        // Tourist attractions lat/long, 
-        // The user's location lat/long, 
-        // The distance in miles between the user's location and each of the attractions.
-        // The reward points for visiting each Attraction.
-        //    Note: Attraction reward points can be gathered from RewardsCentral
-
-
     @RequestMapping(&quot;/getNearbyAttractions&quot;) 
     public String getNearbyAttractions(@RequestParam String userName) {
-    	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
-    	return JsonStream.serialize(tourGuideService.getNearByAttractions(visitedLocation));
-    }
-<span class="nc" id="L58">    </span>
-<span class="nc" id="L59">    @RequestMapping(&quot;/getRewards&quot;) //Ne pas modifier</span>
-    public String getRewards(@RequestParam String userName) {
-    	return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));
+<span class="nc" id="L60">    	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));</span>
+<span class="nc" id="L61">    	return JsonStream.serialize(tourGuideService.getNearByAttractions(visitedLocation));</span>
     }
     
-<span class="nc" id="L64">    @RequestMapping(&quot;/getAllCurrentLocations&quot;)</span>
+    @RequestMapping(&quot;/getRewards&quot;) //Ne pas modifier
+    public String getRewards(@RequestParam String userName) {
+<span class="nc" id="L66">    	return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));</span>
+    }
+    
+    @RequestMapping(&quot;/getAllCurrentLocations&quot;)
     public String getAllCurrentLocations() {
 
 
@@ -76,19 +81,19 @@ import tripPricer.Provider;
     	//        ...
     	//     }
     	
-    	return JsonStream.serialize(&quot;&quot;);
+<span class="nc" id="L84">    	return JsonStream.serialize(&quot;&quot;);</span>
     }
     
-<span class="nc" id="L82">    @RequestMapping(&quot;/getTripDeals&quot;)</span>
+    @RequestMapping(&quot;/getTripDeals&quot;)
     public String getTripDeals(@RequestParam String userName) {
-    	List&lt;Provider&gt; providers = tourGuideService.getTripDeals(getUser(userName));
-    	return JsonStream.serialize(providers);
+<span class="nc" id="L89">    	List&lt;Provider&gt; providers = tourGuideService.getTripDeals(getUser(userName));</span>
+<span class="nc" id="L90">    	return JsonStream.serialize(providers);</span>
     }
-<span class="nc" id="L87">    </span>
-<span class="nc" id="L88">    private User getUser(String userName) {</span>
-    	return tourGuideService.getUser(userName);
+    
+    private User getUser(String userName) {
+<span class="nc" id="L94">    	return tourGuideService.getUser(userName);</span>
     }
    
-<span class="nc" id="L92"></span>
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

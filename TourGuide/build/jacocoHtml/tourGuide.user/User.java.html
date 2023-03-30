@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import tripPricer.Provider;
@@ -15,91 +16,129 @@ public class User {
 	private String phoneNumber;
 	private String emailAddress;
 	private Date latestLocationTimestamp;
-<span class="nc" id="L18">	private List&lt;VisitedLocation&gt; visitedLocations = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L19">	private List&lt;UserReward&gt; userRewards = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L20">	private UserPreferences userPreferences = new UserPreferences();</span>
-<span class="nc" id="L21">	private List&lt;Provider&gt; tripDeals = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L22">	public User(UUID userId, String userName, String phoneNumber, String emailAddress) {</span>
-<span class="nc" id="L23">		this.userId = userId;</span>
-<span class="nc" id="L24">		this.userName = userName;</span>
-<span class="nc" id="L25">		this.phoneNumber = phoneNumber;</span>
-<span class="nc" id="L26">		this.emailAddress = emailAddress;</span>
-<span class="nc" id="L27">	}</span>
-	
+<span class="fc" id="L19">	private List&lt;VisitedLocation&gt; visitedLocations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L20">	private List&lt;UserReward&gt; userRewards = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L21">	private UserPreferences userPreferences = new UserPreferences();</span>
+<span class="fc" id="L22">	private List&lt;Provider&gt; tripDeals = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L24">	private List&lt;Attraction&gt; attractionList = new ArrayList&lt;&gt;();</span>
+	private Attraction attraction;
+
+	private String attractionName;
+	private String attractionCity;
+	private String attractionState;
+	private double attractionLatitude;
+	private double attractionLongitude;
+	private Location location;
+
+<span class="fc" id="L34">	public User(UUID userId, String userName, String phoneNumber, String emailAddress) {</span>
+<span class="fc" id="L35">		this.userId = userId;</span>
+<span class="fc" id="L36">		this.userName = userName;</span>
+<span class="fc" id="L37">		this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L38">		this.emailAddress = emailAddress;</span>
+<span class="fc" id="L39">	}</span>
+
 	public UUID getUserId() {
-<span class="nc" id="L30">		return userId;</span>
+<span class="fc" id="L42">		return userId;</span>
 	}
-	
+
 	public String getUserName() {
-<span class="nc" id="L34">		return userName;</span>
+<span class="fc" id="L46">		return userName;</span>
 	}
-	
+
 	public void setPhoneNumber(String phoneNumber) {
-<span class="nc" id="L38">		this.phoneNumber = phoneNumber;</span>
-<span class="nc" id="L39">	}</span>
-	
+<span class="nc" id="L50">		this.phoneNumber = phoneNumber;</span>
+<span class="nc" id="L51">	}</span>
+
 	public String getPhoneNumber() {
-<span class="nc" id="L42">		return phoneNumber;</span>
+<span class="nc" id="L54">		return phoneNumber;</span>
 	}
 
 	public void setEmailAddress(String emailAddress) {
-<span class="nc" id="L46">		this.emailAddress = emailAddress;</span>
-<span class="nc" id="L47">	}</span>
-	
+<span class="nc" id="L58">		this.emailAddress = emailAddress;</span>
+<span class="nc" id="L59">	}</span>
+
 	public String getEmailAddress() {
-<span class="nc" id="L50">		return emailAddress;</span>
+<span class="nc" id="L62">		return emailAddress;</span>
 	}
-	
+
 	public void setLatestLocationTimestamp(Date latestLocationTimestamp) {
-<span class="nc" id="L54">		this.latestLocationTimestamp = latestLocationTimestamp;</span>
-<span class="nc" id="L55">	}</span>
-	
+<span class="nc" id="L66">		this.latestLocationTimestamp = latestLocationTimestamp;</span>
+<span class="nc" id="L67">	}</span>
+
 	public Date getLatestLocationTimestamp() {
-<span class="nc" id="L58">		return latestLocationTimestamp;</span>
+<span class="nc" id="L70">		return latestLocationTimestamp;</span>
 	}
-	
+
 	public void addToVisitedLocations(VisitedLocation visitedLocation) {
-<span class="nc" id="L62">		visitedLocations.add(visitedLocation);</span>
-<span class="nc" id="L63">	}</span>
-	
+<span class="fc" id="L74">		visitedLocations.add(visitedLocation);</span>
+<span class="fc" id="L75">	}</span>
+
 	public List&lt;VisitedLocation&gt; getVisitedLocations() {
-<span class="nc" id="L66">		return visitedLocations;</span>
+<span class="fc" id="L78">		return visitedLocations;</span>
 	}
-	
+
+	public void setAttraction(Attraction attraction) {
+<span class="nc" id="L82">		this.attraction = attraction;</span>
+<span class="nc" id="L83">	}</span>
+
+	public Attraction getAttraction() {
+<span class="nc" id="L86">		return attraction;</span>
+	}
+
 	public void clearVisitedLocations() {
-<span class="nc" id="L70">		visitedLocations.clear();</span>
-<span class="nc" id="L71">	}</span>
+<span class="nc" id="L90">		visitedLocations.clear();</span>
+<span class="nc" id="L91">	}</span>
 
 	public void addUserReward(UserReward userReward) {
 //		if(userRewards.stream().filter(r -&gt; r.attraction.attractionName.equals(userReward.attraction.attractionName)).count() == 0) {
 ////		if(userRewards.stream().filter(r -&gt; !r.attraction.attractionName.equals(userReward.attraction)).count() == 0)
-<span class="nc" id="L76">		userRewards.add(userReward);</span>
-<span class="nc" id="L77">		}</span>
+<span class="fc" id="L96">		userRewards.add(userReward);</span>
+<span class="fc" id="L97">	}</span>
 //}
-	
+
 	public List&lt;UserReward&gt; getUserRewards() {
-<span class="nc" id="L81">		return userRewards;</span>
+<span class="fc" id="L101">		return userRewards;</span>
 	}
-	
+
 	public UserPreferences getUserPreferences() {
-<span class="nc" id="L85">		return userPreferences;</span>
+<span class="fc" id="L105">		return userPreferences;</span>
 	}
-	
+
 	public void setUserPreferences(UserPreferences userPreferences) {
-<span class="nc" id="L89">		this.userPreferences = userPreferences;</span>
-<span class="nc" id="L90">	}</span>
+<span class="nc" id="L109">		this.userPreferences = userPreferences;</span>
+<span class="nc" id="L110">	}</span>
 
 	public VisitedLocation getLastVisitedLocation() {
-<span class="nc" id="L93">		return visitedLocations.get(visitedLocations.size() - 1);</span>
+<span class="fc" id="L113">		return visitedLocations.get(visitedLocations.size() - 1);</span>
 	}
 
 	public void setTripDeals(List&lt;Provider&gt; tripDeals) {
-<span class="nc" id="L97">		this.tripDeals = tripDeals;</span>
-<span class="nc" id="L98">	}</span>
-	
+<span class="fc" id="L117">		this.tripDeals = tripDeals;</span>
+<span class="fc" id="L118">	}</span>
+
 	public List&lt;Provider&gt; getTripDeals() {
-<span class="nc" id="L101">		return tripDeals;</span>
+<span class="nc" id="L121">		return tripDeals;</span>
+	}
+
+	public void setAttractionList(List&lt;Attraction&gt; attractionList) {
+<span class="nc" id="L125">		this.attractionList = attractionList;</span>
+<span class="nc" id="L126">	}</span>
+
+	public List&lt;Attraction&gt; getAttractions(String attractionName, String attractionCity, String attractionState, double attractionLatitude, double attractionLongitude) {
+<span class="nc" id="L129">		Attraction attraction = new Attraction(attractionName, attractionCity, attractionState, attractionLatitude, attractionLongitude);</span>
+<span class="nc" id="L130">		List&lt;Attraction&gt; attractionList = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L132">		attractionList.add(attraction);</span>
+
+<span class="nc" id="L134">		return attractionList;</span>
+
 	}
 
 }
+//
+//	public List&lt;Attraction&gt; getAttractions(){
+//		return attractionList;
+//	}
+//}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
