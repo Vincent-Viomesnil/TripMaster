@@ -17,10 +17,7 @@ import gpsUtil.location.VisitedLocation;
 import rewardCentral.RewardCentral;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.tracker.Tracker;
-import tourGuide.user.User;
-import tourGuide.user.UserAttraction;
-import tourGuide.user.UserLocation;
-import tourGuide.user.UserReward;
+import tourGuide.user.*;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
 
@@ -94,6 +91,35 @@ public class TourGuideService {
 		//Provider.class ne peut être modifié
 		return providers;
 	}
+
+
+
+	public UserPreferences updateUserPreferences(String userName, UserPreferences userPreferences){
+
+		User user = getUser(userName);
+		user.setUserPreferences(userPreferences);
+
+		return userPreferences;
+	}
+
+	public UserPreferences getUserPreferences(String userName){
+		return internalUserMap.get(userName).getUserPreferences();
+	}
+
+
+//	public UserPreferences updateUserPreferences(User user){
+//		List<UserPreferences> userPreferencesList = new ArrayList<>();
+//		for (UserPreferences userPreferences : userPreferencesList) {
+//			userPreferences.setTripDuration(user.getUserPreferences().getTripDuration());
+//			userPreferences.setTicketQuantity(user.getUserPreferences().getTicketQuantity());
+//			userPreferences.setNumberOfAdults(user.getUserPreferences().getNumberOfAdults());
+//			userPreferences.setNumberOfChildren(user.getUserPreferences().getNumberOfChildren());
+//
+//			return userPreferences;
+//		}
+//		return null;
+//	}
+
 
 
 //	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
