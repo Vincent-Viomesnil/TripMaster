@@ -82,7 +82,7 @@ public class TourGuideController {
     }
 
     @RequestMapping("/getUserPreferences/{userName}")
-    public UserPreferences updateUserPreferences(@PathVariable String userName) {
+    public UserPreferences getUserPreferences(@PathVariable String userName) {
        //ResponseEntity
         return tourGuideService.getUserPreferences(userName);
     }

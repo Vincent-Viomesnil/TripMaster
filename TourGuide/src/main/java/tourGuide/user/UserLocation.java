@@ -9,9 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserLocation {
 
+
+private String userid;
 private double visitedLatitude;
 private double visitedLongitude;
-private String userid;
+
 
 public UserLocation(String userid, double visitedLongitude, double visitedLatitude) {
     this.userid = userid;
