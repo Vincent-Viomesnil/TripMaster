@@ -102,6 +102,7 @@ public class TourGuideService {
 		return userPreferences;
 	}
 
+
 	public UserPreferences getUserPreferences(String userName){
 		return internalUserMap.get(userName).getUserPreferences();
 	}
