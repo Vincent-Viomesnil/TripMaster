@@ -54,27 +54,6 @@ public class RewardsService {
 			}
 		}
 	}
-//public void calculateRewards(User user) {
-//	List<Attraction> attractions = gpsUtil.getAttractions();
-//	System.out.println("Test 11");
-//	for (Attraction attraction : attractions) {
-//		System.out.println("Avant condition if " + attraction);
-//		if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName.equals(attraction.attractionName))) {
-//			System.out.println("Avant methotodo " + attraction);
-//			methodToDo(user, attraction);
-////			System.out.println("Apres " + attraction);
-//		}
-//	}
-//}
-//
-//	public void methodToDo(User user, Attraction attraction) {
-//		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
-//		for(VisitedLocation visitedLocation : userVisitedLocations) {
-//					if (nearAttraction(visitedLocation, attraction)) {
-//					user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
-//				}
-//			}
-//	}
 
 	public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
 		return (getDistance(attraction, location) < attractionProximityRange);
