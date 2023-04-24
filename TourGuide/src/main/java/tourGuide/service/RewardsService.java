@@ -1,6 +1,8 @@
 package tourGuide.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import org.w3c.dom.Attr;
 import rewardCentral.RewardCentral;
 import tourGuide.user.User;
 import tourGuide.user.UserReward;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RewardsService {
@@ -24,7 +27,7 @@ public class RewardsService {
 	private GpsUtil gpsUtil;
 	private final RewardCentral rewardsCentral;
 
-
+	private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 	
 	public RewardsService(GpsUtil gpsUtil, RewardCentral rewardCentral) {
 		this.gpsUtil = gpsUtil;
@@ -41,19 +44,21 @@ public class RewardsService {
 
 	public void calculateRewards(User user) {
 		List<Attraction> attractions = gpsUtil.getAttractions();
-		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
+		List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
+//		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
 		for (VisitedLocation visitedLocation : userVisitedLocations) {
 			System.out.println("Test 11");
 			for (Attraction attraction : attractions) {
 				System.out.println("Avant condition if " + attraction);
-				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName.equals(attraction.attractionName))) {
+//				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
+//						.equals(attraction.attractionName))) {
 					if (nearAttraction(visitedLocation, attraction)) {
 						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
 					}
 				}
 			}
 		}
-	}
+//	}
 
 	public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
 		return (getDistance(attraction, location) < attractionProximityRange);

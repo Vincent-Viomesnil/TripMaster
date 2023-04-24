@@ -29,7 +29,6 @@ public class TourGuideService {
 
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
-//	private UserFive userFive;
 	boolean testMode = true;
 	
 	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {
@@ -59,9 +58,9 @@ public class TourGuideService {
 
 
 	public VisitedLocation trackUserLocation(User user) {
-		VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
-		user.addToVisitedLocations(visitedLocation);
-		rewardsService.calculateRewards(user);
+		VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId()); //creation d'une visitedLocation random
+		user.addToVisitedLocations(visitedLocation); //ajout de la visitedLocation dans la List de VisitedLocations du user
+		rewardsService.calculateRewards(user); //Méthode pour calculer un reward
 		return visitedLocation;
 	}
 	
@@ -221,7 +220,7 @@ public class TourGuideService {
 	}
 	
 	private void generateUserLocationHistory(User user) {
-		IntStream.range(0, 3).forEach(i -> user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()),  getRandomTime())));
+	IntStream.range(0, 3).forEach(i -> user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()),  getRandomTime())));
 	}
 	
 	private double generateRandomLongitude() {

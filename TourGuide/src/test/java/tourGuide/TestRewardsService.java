@@ -39,7 +39,7 @@ public class TestRewardsService {
 		user.addToVisitedLocations(new VisitedLocation(user.getUserId(), attraction, new Date()));
 		tourGuideService.trackUserLocation(user);
 		List<UserReward> userRewards = user.getUserRewards();
-		tourGuideService.tracker.stopTracking();
+//		tourGuideService.tracker.stopTracking();
 		assertTrue(userRewards.size() == 1);
 	}
 	
