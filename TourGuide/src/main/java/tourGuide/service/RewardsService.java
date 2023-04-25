@@ -45,9 +45,7 @@ public class RewardsService {
 		List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
 //		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
 		for (VisitedLocation visitedLocation : userVisitedLocations) {
-			System.out.println("Test 11");
 			for (Attraction attraction : attractions) {
-				System.out.println("Avant condition if " + attraction);
 //				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
 //						.equals(attraction.attractionName))) {
 					if (nearAttraction(visitedLocation, attraction)) {
