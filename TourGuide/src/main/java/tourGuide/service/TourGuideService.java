@@ -33,8 +33,8 @@ public class TourGuideService {
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
 	boolean testMode = true;
-	ExecutorService executorService = Executors.newFixedThreadPool(10000);
-//Locale.setDefault(Locale.US);
+	ExecutorService executorService = Executors.newFixedThreadPool(100000);
+
 
 	
 	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {
@@ -53,7 +53,7 @@ public class TourGuideService {
 	public List<UserReward> getUserRewards(User user) {
 		return user.getUserRewards();
 	}
-	
+
 	public VisitedLocation getUserLocation(User user) {
 		VisitedLocation visitedLocation = (user.getVisitedLocations().size() > 0) ?
 			user.getLastVisitedLocation() :
@@ -69,10 +69,11 @@ public class TourGuideService {
 					rewardsService.calculateRewards(user);//Méthode pour calculer un reward
 					return visitedLocation;
 				}, executorService)
-				.thenAccept(visitedLocation -> {
+				.whenComplete((visitedLocation, executorService) -> {
 					System.out.println("User " + user.getUserName() + " tracked at location " + visitedLocation.location.toString());
 				});
-		return null; // OK ? ?
+
+		return null;
 	}
 
 	

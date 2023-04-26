@@ -46,15 +46,15 @@ public class RewardsService {
 //		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
 		for (VisitedLocation visitedLocation : userVisitedLocations) {
 			for (Attraction attraction : attractions) {
-//				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
-//						.equals(attraction.attractionName))) {
+				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
+						.equals(attraction.attractionName))) {
 					if (nearAttraction(visitedLocation, attraction)) {
 						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
 					}
 				}
 			}
 		}
-//	}
+	}
 
 	public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
 		return (getDistance(attraction, location) < attractionProximityRange);
