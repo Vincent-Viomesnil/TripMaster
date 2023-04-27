@@ -3,9 +3,7 @@
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -26,97 +24,105 @@ import tripPricer.TripPricer;
 
 @Service
 public class TourGuideService {
-<span class="fc" id="L29">	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);</span>
+<span class="fc" id="L27">	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);</span>
 	private final GpsUtil gpsUtil;
 	private final RewardsService rewardsService;
 
-<span class="fc" id="L33">	private final TripPricer tripPricer = new TripPricer();</span>
+<span class="fc" id="L31">	private final TripPricer tripPricer = new TripPricer();</span>
 	public final Tracker tracker;
-<span class="fc" id="L35">	boolean testMode = true;</span>
-<span class="fc" id="L36">	ExecutorService executorService = Executors.newFixedThreadPool(100000);</span>
+<span class="fc" id="L33">	boolean testMode = true;</span>
+<span class="fc" id="L34">	ExecutorService executorService = Executors.newFixedThreadPool(10);</span>
 
 
 	
-<span class="fc" id="L40">	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {</span>
-<span class="fc" id="L41">		this.gpsUtil = gpsUtil;</span>
-<span class="fc" id="L42">		this.rewardsService = rewardsService;</span>
+<span class="fc" id="L38">	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {</span>
+<span class="fc" id="L39">		this.gpsUtil = gpsUtil;</span>
+<span class="fc" id="L40">		this.rewardsService = rewardsService;</span>
 		
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">		if(testMode) {</span>
-<span class="fc" id="L45">			logger.info(&quot;TestMode enabled&quot;);</span>
-<span class="fc" id="L46">			logger.debug(&quot;Initializing users&quot;);</span>
-<span class="fc" id="L47">			initializeInternalUsers();</span>
-<span class="fc" id="L48">			logger.debug(&quot;Finished initializing users&quot;);</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">		if(testMode) {</span>
+<span class="fc" id="L43">			logger.info(&quot;TestMode enabled&quot;);</span>
+<span class="fc" id="L44">			logger.debug(&quot;Initializing users&quot;);</span>
+<span class="fc" id="L45">			initializeInternalUsers();</span>
+<span class="fc" id="L46">			logger.debug(&quot;Finished initializing users&quot;);</span>
 		}
-<span class="fc" id="L50">		tracker = new Tracker(this);</span>
-<span class="fc" id="L51">		addShutDownHook();</span>
-<span class="fc" id="L52">	}</span>
+<span class="fc" id="L48">		tracker = new Tracker(this);</span>
+<span class="fc" id="L49">		addShutDownHook();</span>
+<span class="fc" id="L50">	}</span>
 	public List&lt;UserReward&gt; getUserRewards(User user) {
-<span class="nc" id="L54">		return user.getUserRewards();</span>
+<span class="nc" id="L52">		return user.getUserRewards();</span>
 	}
 
-	public VisitedLocation getUserLocation(User user) {
-<span class="nc bnc" id="L58" title="All 2 branches missed.">		VisitedLocation visitedLocation = (user.getVisitedLocations().size() &gt; 0) ?</span>
-<span class="nc" id="L59">			user.getLastVisitedLocation() :</span>
-<span class="nc" id="L60">			trackUserLocation(user);</span>
-<span class="nc" id="L61">		return visitedLocation;</span>
+	public VisitedLocation getUserLocation(User user) throws ExecutionException, InterruptedException {
+<span class="nc bnc" id="L56" title="All 2 branches missed.">		VisitedLocation visitedLocation = (user.getVisitedLocations().size() &gt; 0) ?</span>
+<span class="nc" id="L57">			user.getLastVisitedLocation() :</span>
+<span class="nc" id="L58">			trackUserLocation(user);</span>
+<span class="nc" id="L59">		return visitedLocation;</span>
 	}
 
 
-	public VisitedLocation trackUserLocation(User user) {
-<span class="fc" id="L66">		CompletableFuture.supplyAsync(() -&gt; {</span>
-<span class="fc" id="L67">					VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());//creation d'une visitedLocation random</span>
-<span class="fc" id="L68">					user.addToVisitedLocations(visitedLocation);//ajout de la visitedLocation dans la List de VisitedLocations du user</span>
-<span class="fc" id="L69">					rewardsService.calculateRewards(user);//Méthode pour calculer un reward</span>
-<span class="fc" id="L70">					return visitedLocation;</span>
-				}, executorService)
-<span class="fc" id="L72">				.whenComplete((visitedLocation, executorService) -&gt; {</span>
-<span class="fc" id="L73">					System.out.println(&quot;User &quot; + user.getUserName() + &quot; tracked at location &quot; + visitedLocation.location.toString());</span>
-<span class="fc" id="L74">				});</span>
+//	public VisitedLocation trackUserLocation(User user) {
+//
+//		CompletableFuture.supplyAsync(() -&gt; {
+//					VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());//creation d'une visitedLocation random
+//					user.addToVisitedLocations(visitedLocation);//ajout de la visitedLocation dans la List de VisitedLocations du user
+//					rewardsService.calculateRewards(user);//Méthode pour calculer un reward
+//					System.out.println(&quot;User &quot; + user.getUserName() + &quot; tracked at location &quot; + visitedLocation.location);
+//					return visitedLocation;
+//				}, executorService);
+//		return null;
+//	}
 
-<span class="fc" id="L76">		return null;</span>
+	public VisitedLocation trackUserLocation(User user) throws ExecutionException, InterruptedException {
+
+<span class="fc" id="L77">		Future&lt;VisitedLocation&gt; visitedLocation = executorService.submit(() -&gt; 	gpsUtil.getUserLocation(user.getUserId()));//creation d'une visitedLocation random</span>
+<span class="fc" id="L78">		user.addToVisitedLocations(visitedLocation.get()); //ajout de la visitedLocation dans la List de VisitedLocations du user</span>
+<span class="fc" id="L79">		rewardsService.calculateRewards(user);//Méthode pour calculer un reward</span>
+<span class="fc" id="L80">		System.out.println(&quot;User &quot; + user.getUserName() + &quot; tracked at location &quot; + visitedLocation.get().location);</span>
+<span class="fc" id="L81">		return visitedLocation.get();</span>
+
 	}
 
 	
 	public User getUser(String userName) {
-<span class="nc" id="L81">		return internalUserMap.get(userName);</span>
+<span class="nc" id="L87">		return internalUserMap.get(userName);</span>
 	}
 	
 	public List&lt;User&gt; getAllUsers() {
-<span class="fc" id="L85">		return internalUserMap.values().stream().collect(Collectors.toList());</span>
+<span class="fc" id="L91">		return internalUserMap.values().stream().collect(Collectors.toList());</span>
 	}
 	
 	public void addUser(User user) {
-<span class="nc bnc" id="L89" title="All 2 branches missed.">		if(!internalUserMap.containsKey(user.getUserName())) {</span>
-<span class="nc" id="L90">			internalUserMap.put(user.getUserName(), user);</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if(!internalUserMap.containsKey(user.getUserName())) {</span>
+<span class="nc" id="L96">			internalUserMap.put(user.getUserName(), user);</span>
 		}
-<span class="nc" id="L92">	}</span>
+<span class="nc" id="L98">	}</span>
 	
 	public List&lt;Provider&gt; getTripDeals(User user) {
-<span class="nc" id="L95">		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
-<span class="nc" id="L96">		List&lt;Provider&gt; providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), </span>
-<span class="nc" id="L97">				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);</span>
+<span class="nc" id="L101">		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
+<span class="nc" id="L102">		List&lt;Provider&gt; providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), </span>
+<span class="nc" id="L103">				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);</span>
 
 //		providers.addAll(tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(),
 //				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints));
 // Si besoin de setter la list de providers à 10
-<span class="nc" id="L102">		user.setTripDeals(providers);</span>
+<span class="nc" id="L108">		user.setTripDeals(providers);</span>
 		//Provider.class ne peut être modifié
-<span class="nc" id="L104">		return providers;</span>
+<span class="nc" id="L110">		return providers;</span>
 	}
 
 
 
 	public UserPreferences updateUserPreferences(String userName, UserPreferences userPreferences){
 
-<span class="nc" id="L111">		User user = getUser(userName);</span>
-<span class="nc" id="L112">		user.setUserPreferences(userPreferences);</span>
+<span class="nc" id="L117">		User user = getUser(userName);</span>
+<span class="nc" id="L118">		user.setUserPreferences(userPreferences);</span>
 
-<span class="nc" id="L114">		return userPreferences;</span>
+<span class="nc" id="L120">		return userPreferences;</span>
 	}
 
 
 	public UserPreferences getUserPreferences(String userName){
-<span class="nc" id="L119">		return internalUserMap.get(userName).getUserPreferences();</span>
+<span class="nc" id="L125">		return internalUserMap.get(userName).getUserPreferences();</span>
 	}
 
 
@@ -157,59 +163,59 @@ public class TourGuideService {
 //			}
 //		}
 	public List&lt;Attraction&gt; getNearByAttractions(VisitedLocation visitedLocation) {
-<span class="nc" id="L160">		List&lt;Attraction&gt; nearbyFiveAttractions =</span>
-<span class="nc" id="L161">			 gpsUtil.getAttractions()</span>
-<span class="nc" id="L162">					.stream()</span>
-<span class="nc" id="L163">					 .sorted(Comparator.comparing(attraction -&gt; rewardsService.getDistance(visitedLocation.location, attraction)))</span>
+<span class="nc" id="L166">		List&lt;Attraction&gt; nearbyFiveAttractions =</span>
+<span class="nc" id="L167">			 gpsUtil.getAttractions()</span>
+<span class="nc" id="L168">					.stream()</span>
+<span class="nc" id="L169">					 .sorted(Comparator.comparing(attraction -&gt; rewardsService.getDistance(visitedLocation.location, attraction)))</span>
 //					.sorted(Comparator.comparing(attraction -&gt; rewardsService.nearAttraction(visitedLocation, attraction)))
-<span class="nc" id="L165">					.limit(5)</span>
-<span class="nc" id="L166">					.collect(Collectors.toList());</span>
+<span class="nc" id="L171">					.limit(5)</span>
+<span class="nc" id="L172">					.collect(Collectors.toList());</span>
 
-<span class="nc" id="L168">		return nearbyFiveAttractions;</span>
+<span class="nc" id="L174">		return nearbyFiveAttractions;</span>
 	}
 
 	public List&lt;UserLocation&gt; getAllCurrentLocations(List&lt;User&gt; userList) {
 
-<span class="nc" id="L173">		List&lt;UserLocation&gt; allCurrentLocations = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L174" title="All 2 branches missed.">		for (User user : userList) {</span>
-<span class="nc" id="L175">			UserLocation userLocation = new UserLocation();</span>
-<span class="nc" id="L176">			userLocation.setUserid(user.getUserId().toString());</span>
-<span class="nc" id="L177">			userLocation.setVisitedLongitude(user.getLastVisitedLocation().location.longitude);</span>
-<span class="nc" id="L178">			userLocation.setVisitedLatitude(user.getLastVisitedLocation().location.latitude);</span>
-<span class="nc" id="L179">			allCurrentLocations.add(userLocation);</span>
-<span class="nc" id="L180">		}</span>
-<span class="nc" id="L181">		return allCurrentLocations;</span>
+<span class="nc" id="L179">		List&lt;UserLocation&gt; allCurrentLocations = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (User user : userList) {</span>
+<span class="nc" id="L181">			UserLocation userLocation = new UserLocation();</span>
+<span class="nc" id="L182">			userLocation.setUserid(user.getUserId().toString());</span>
+<span class="nc" id="L183">			userLocation.setVisitedLongitude(user.getLastVisitedLocation().location.longitude);</span>
+<span class="nc" id="L184">			userLocation.setVisitedLatitude(user.getLastVisitedLocation().location.latitude);</span>
+<span class="nc" id="L185">			allCurrentLocations.add(userLocation);</span>
+<span class="nc" id="L186">		}</span>
+<span class="nc" id="L187">		return allCurrentLocations;</span>
 	}
 
 	public List&lt;UserAttraction&gt; getAttractions(VisitedLocation visitedLocation) {
-<span class="nc" id="L185">		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);</span>
-<span class="nc" id="L186">		List&lt;Attraction&gt; attractionList = tourGuideService.getNearByAttractions(visitedLocation);</span>
-<span class="nc" id="L187">		List&lt;UserAttraction&gt; userAttractionList = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L188" title="All 2 branches missed.">		for (Attraction attraction : attractionList) {</span>
-<span class="nc" id="L189">			UserAttraction userAttraction1 = new UserAttraction();</span>
-<span class="nc" id="L190">			rewardCentral.RewardCentral rewardCentral = new RewardCentral();</span>
-<span class="nc" id="L191">			userAttraction1.setAttractionName(attraction.attractionName);</span>
-<span class="nc" id="L192">			userAttraction1.setAttractionLatitude(attraction.latitude);</span>
-<span class="nc" id="L193">			userAttraction1.setAttractionLongitude(attraction.longitude);</span>
-<span class="nc" id="L194">			userAttraction1.setVisitedLatitude(visitedLocation.location.latitude);</span>
-<span class="nc" id="L195">			userAttraction1.setVisitedLongitude(visitedLocation.location.longitude);</span>
-<span class="nc" id="L196">			userAttraction1.setDistanceUser(rewardsService.getDistance(attraction, visitedLocation.location));</span>
-<span class="nc" id="L197">			userAttraction1.setRewardPoints(rewardCentral.getAttractionRewardPoints(attraction.attractionId, visitedLocation.userId));</span>
-<span class="nc" id="L198">			userAttractionList.add(userAttraction1);</span>
-<span class="nc" id="L199">		}</span>
+<span class="nc" id="L191">		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);</span>
+<span class="nc" id="L192">		List&lt;Attraction&gt; attractionList = tourGuideService.getNearByAttractions(visitedLocation);</span>
+<span class="nc" id="L193">		List&lt;UserAttraction&gt; userAttractionList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		for (Attraction attraction : attractionList) {</span>
+<span class="nc" id="L195">			UserAttraction userAttraction1 = new UserAttraction();</span>
+<span class="nc" id="L196">			rewardCentral.RewardCentral rewardCentral = new RewardCentral();</span>
+<span class="nc" id="L197">			userAttraction1.setAttractionName(attraction.attractionName);</span>
+<span class="nc" id="L198">			userAttraction1.setAttractionLatitude(attraction.latitude);</span>
+<span class="nc" id="L199">			userAttraction1.setAttractionLongitude(attraction.longitude);</span>
+<span class="nc" id="L200">			userAttraction1.setVisitedLatitude(visitedLocation.location.latitude);</span>
+<span class="nc" id="L201">			userAttraction1.setVisitedLongitude(visitedLocation.location.longitude);</span>
+<span class="nc" id="L202">			userAttraction1.setDistanceUser(rewardsService.getDistance(attraction, visitedLocation.location));</span>
+<span class="nc" id="L203">			userAttraction1.setRewardPoints(rewardCentral.getAttractionRewardPoints(attraction.attractionId, visitedLocation.userId));</span>
+<span class="nc" id="L204">			userAttractionList.add(userAttraction1);</span>
+<span class="nc" id="L205">		}</span>
 
-<span class="nc" id="L201">		return userAttractionList;</span>
+<span class="nc" id="L207">		return userAttractionList;</span>
 	}
 
 
 
    private void addShutDownHook() {
-<span class="fc" id="L207">			Runtime.getRuntime().addShutdownHook(new Thread() {</span>
+<span class="fc" id="L213">			Runtime.getRuntime().addShutdownHook(new Thread() {</span>
 				public void run() {
-<span class="fc" id="L209">					tracker.stopTracking();</span>
-<span class="fc" id="L210">				}</span>
+<span class="fc" id="L215">					tracker.stopTracking();</span>
+<span class="fc" id="L216">				}</span>
 			});
-<span class="fc" id="L212">		}</span>
+<span class="fc" id="L218">		}</span>
 
    /**********************************************************************************
     *
@@ -218,39 +224,39 @@ public class TourGuideService {
     **********************************************************************************/
 	private static final String tripPricerApiKey = &quot;test-server-api-key&quot;;
 	// Database connection will be used for external users, but for testing purposes internal users are provided and stored in memory
-<span class="fc" id="L221">	private final Map&lt;String, User&gt; internalUserMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L227">	private final Map&lt;String, User&gt; internalUserMap = new HashMap&lt;&gt;();</span>
 	private void initializeInternalUsers() {
-<span class="fc" id="L223">		IntStream.range(0, InternalTestHelper.getInternalUserNumber()).forEach(i -&gt; {</span>
-<span class="fc" id="L224">			String userName = &quot;internalUser&quot; + i;</span>
-<span class="fc" id="L225">			String phone = &quot;000&quot;;</span>
-<span class="fc" id="L226">			String email = userName + &quot;@tourGuide.com&quot;;</span>
-<span class="fc" id="L227">			User user = new User(UUID.randomUUID(), userName, phone, email);</span>
-<span class="fc" id="L228">			generateUserLocationHistory(user);</span>
+<span class="fc" id="L229">		IntStream.range(0, InternalTestHelper.getInternalUserNumber()).forEach(i -&gt; {</span>
+<span class="fc" id="L230">			String userName = &quot;internalUser&quot; + i;</span>
+<span class="fc" id="L231">			String phone = &quot;000&quot;;</span>
+<span class="fc" id="L232">			String email = userName + &quot;@tourGuide.com&quot;;</span>
+<span class="fc" id="L233">			User user = new User(UUID.randomUUID(), userName, phone, email);</span>
+<span class="fc" id="L234">			generateUserLocationHistory(user);</span>
 			
-<span class="fc" id="L230">			internalUserMap.put(userName, user);</span>
-<span class="fc" id="L231">		});</span>
-<span class="fc" id="L232">		logger.debug(&quot;Created &quot; + InternalTestHelper.getInternalUserNumber() + &quot; internal test users.&quot;);</span>
-<span class="fc" id="L233">	}</span>
+<span class="fc" id="L236">			internalUserMap.put(userName, user);</span>
+<span class="fc" id="L237">		});</span>
+<span class="fc" id="L238">		logger.debug(&quot;Created &quot; + InternalTestHelper.getInternalUserNumber() + &quot; internal test users.&quot;);</span>
+<span class="fc" id="L239">	}</span>
 	
 	private void generateUserLocationHistory(User user) {
-<span class="fc" id="L236">	IntStream.range(0, 3).forEach(i -&gt; user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()),  getRandomTime())));</span>
-<span class="fc" id="L237">	}</span>
+<span class="fc" id="L242">	IntStream.range(0, 3).forEach(i -&gt; user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()),  getRandomTime())));</span>
+<span class="fc" id="L243">	}</span>
 	
 	private double generateRandomLongitude() {
-<span class="fc" id="L240">		double leftLimit = -180;</span>
-<span class="fc" id="L241">	    double rightLimit = 180;</span>
-<span class="fc" id="L242">	    return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);</span>
-	}
-	
-	private double generateRandomLatitude() {
-<span class="fc" id="L246">		double leftLimit = -85.05112878;</span>
-<span class="fc" id="L247">	    double rightLimit = 85.05112878;</span>
+<span class="fc" id="L246">		double leftLimit = -180;</span>
+<span class="fc" id="L247">	    double rightLimit = 180;</span>
 <span class="fc" id="L248">	    return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);</span>
 	}
 	
+	private double generateRandomLatitude() {
+<span class="fc" id="L252">		double leftLimit = -85.05112878;</span>
+<span class="fc" id="L253">	    double rightLimit = 85.05112878;</span>
+<span class="fc" id="L254">	    return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);</span>
+	}
+	
 	private Date getRandomTime() {
-<span class="fc" id="L252">		LocalDateTime localDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));</span>
-<span class="fc" id="L253">	    return Date.from(localDateTime.toInstant(ZoneOffset.UTC));</span>
+<span class="fc" id="L258">		LocalDateTime localDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));</span>
+<span class="fc" id="L259">	    return Date.from(localDateTime.toInstant(ZoneOffset.UTC));</span>
 	}
 
 }

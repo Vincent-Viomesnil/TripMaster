@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
@@ -30,7 +31,7 @@ public class TestTourGuideService {
 		Locale.setDefault(Locale.US);
 	}
 	@Test
-	public void getUserLocation() {
+	public void getUserLocation() throws ExecutionException, InterruptedException {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		InternalTestHelper.setInternalUserNumber(0);
@@ -86,7 +87,7 @@ public class TestTourGuideService {
 	}
 	
 	@Test
-	public void trackUser() {
+	public void trackUser() throws ExecutionException, InterruptedException {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		InternalTestHelper.setInternalUserNumber(0);
@@ -101,7 +102,7 @@ public class TestTourGuideService {
 	}
 	
 @Test
-public void getNearbyAttractions() {
+public void getNearbyAttractions() throws ExecutionException, InterruptedException {
 	GpsUtil gpsUtil = new GpsUtil();
 	RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 	InternalTestHelper.setInternalUserNumber(0);

@@ -3,9 +3,7 @@ package tourGuide.service;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -33,7 +31,7 @@ public class TourGuideService {
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
 	boolean testMode = true;
-	ExecutorService executorService = Executors.newFixedThreadPool(100000);
+	ExecutorService executorService = Executors.newFixedThreadPool(10);
 
 
 	
@@ -54,7 +52,7 @@ public class TourGuideService {
 		return user.getUserRewards();
 	}
 
-	public VisitedLocation getUserLocation(User user) {
+	public VisitedLocation getUserLocation(User user) throws ExecutionException, InterruptedException {
 		VisitedLocation visitedLocation = (user.getVisitedLocations().size() > 0) ?
 			user.getLastVisitedLocation() :
 			trackUserLocation(user);
@@ -62,18 +60,26 @@ public class TourGuideService {
 	}
 
 
-	public VisitedLocation trackUserLocation(User user) {
+//	public VisitedLocation trackUserLocation(User user) {
+//
+//		CompletableFuture.supplyAsync(() -> {
+//					VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());//creation d'une visitedLocation random
+//					user.addToVisitedLocations(visitedLocation);//ajout de la visitedLocation dans la List de VisitedLocations du user
+//					rewardsService.calculateRewards(user);//Méthode pour calculer un reward
+//					System.out.println("User " + user.getUserName() + " tracked at location " + visitedLocation.location);
+//					return visitedLocation;
+//				}, executorService);
+//		return null;
+//	}
 
-		CompletableFuture.supplyAsync(() -> {
-					VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());//creation d'une visitedLocation random
-					user.addToVisitedLocations(visitedLocation);//ajout de la visitedLocation dans la List de VisitedLocations du user
-					rewardsService.calculateRewards(user);//Méthode pour calculer un reward
-					return visitedLocation;
-				}, executorService)
-				.thenAccept(visitedLocation -> {
-					System.out.println("User " + user.getUserName() + " tracked at location " + visitedLocation.location.toString());
-				});
-		return null;
+	public VisitedLocation trackUserLocation(User user) throws ExecutionException, InterruptedException {
+
+		Future<VisitedLocation> visitedLocation = executorService.submit(() -> 	gpsUtil.getUserLocation(user.getUserId()));//creation d'une visitedLocation random
+		user.addToVisitedLocations(visitedLocation.get()); //ajout de la visitedLocation dans la List de VisitedLocations du user
+		rewardsService.calculateRewards(user);//Méthode pour calculer un reward
+		System.out.println("User " + user.getUserName() + " tracked at location " + visitedLocation.get().location);
+		return visitedLocation.get();
+
 	}
 
 	

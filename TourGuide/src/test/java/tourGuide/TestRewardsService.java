@@ -3,6 +3,7 @@ package tourGuide;
 import static org.junit.Assert.*;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import gpsUtil.location.Location;
 import org.junit.BeforeClass;
@@ -27,7 +28,7 @@ public class TestRewardsService {
 	}
 
 	@Test
-	public void userGetRewards() {
+	public void userGetRewards() throws ExecutionException, InterruptedException {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 
