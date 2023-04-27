@@ -63,16 +63,16 @@ public class TourGuideService {
 
 
 	public VisitedLocation trackUserLocation(User user) {
+
 		CompletableFuture.supplyAsync(() -> {
 					VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());//creation d'une visitedLocation random
 					user.addToVisitedLocations(visitedLocation);//ajout de la visitedLocation dans la List de VisitedLocations du user
 					rewardsService.calculateRewards(user);//Méthode pour calculer un reward
 					return visitedLocation;
 				}, executorService)
-				.whenComplete((visitedLocation, executorService) -> {
+				.thenAccept(visitedLocation -> {
 					System.out.println("User " + user.getUserName() + " tracked at location " + visitedLocation.location.toString());
 				});
-
 		return null;
 	}
 
