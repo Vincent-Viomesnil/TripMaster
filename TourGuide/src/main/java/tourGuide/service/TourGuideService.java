@@ -31,7 +31,7 @@ public class TourGuideService {
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
 	boolean testMode = true;
-	ExecutorService executorService = Executors.newFixedThreadPool(50);
+	ExecutorService executorService = Executors.newFixedThreadPool(150);
 
 
 	
@@ -90,6 +90,7 @@ public class TourGuideService {
 //}
 
 		public CompletableFuture<VisitedLocation> trackUserLocation(User user)  {
+			Locale.setDefault(Locale.US);
 				return CompletableFuture
 						.supplyAsync(() -> {
 							VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
@@ -119,6 +120,8 @@ public class TourGuideService {
 		} catch (InterruptedException e) {
 			executorService.shutdownNow();
 			Thread.currentThread().interrupt();
+
+			executorService = Executors.newFixedThreadPool(150);
 		}
 	}
 //public VisitedLocation trackUserLocation(User user) throws ExecutionException, InterruptedException {

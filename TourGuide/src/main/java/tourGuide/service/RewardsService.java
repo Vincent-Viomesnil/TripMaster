@@ -30,7 +30,7 @@ public class RewardsService {
 	private GpsUtil gpsUtil;
 	private final RewardCentral rewardsCentral;
 	private Logger logger = LoggerFactory.getLogger(RewardsService.class);
-	ExecutorService executorService = Executors.newFixedThreadPool(100);
+	ExecutorService executorService = Executors.newFixedThreadPool(150);
 
 	public RewardsService(GpsUtil gpsUtil, RewardCentral rewardCentral) {
 		this.gpsUtil = gpsUtil;
@@ -46,41 +46,41 @@ public class RewardsService {
 	}
 
 
-//	public void calculateRewards(User user) {
-//		List<Attraction> attractions = gpsUtil.getAttractions();
-//		List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
-////		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
-//		for (VisitedLocation visitedLocation : userVisitedLocations) {
-//			for (Attraction attraction : attractions) {
-//				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
-//						.equals(attraction.attractionName))) {
-//					if (nearAttraction(visitedLocation, attraction)) {
-//						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
-//					}
-//				}
-//			}
-//		}
-//}
-
-
-	public CompletableFuture<Void> calculateRewards(User user) {
+	public void calculateRewards(User user) {
 		List<Attraction> attractions = gpsUtil.getAttractions();
 		List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
-		CompletableFuture
-				.supplyAsync(() -> {
-							for (VisitedLocation visitedLocation : userVisitedLocations) {
-								for (Attraction attraction : attractions) {
-									if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
-											.equals(attraction.attractionName))) {
-										if (nearAttraction(visitedLocation, attraction)) {
-											user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
-										}
-									}
-								}
-							} return null;
-						} 	, executorService);
-		return null;
+//		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
+		for (VisitedLocation visitedLocation : userVisitedLocations) {
+			for (Attraction attraction : attractions) {
+				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
+						.equals(attraction.attractionName))) {
+					if (nearAttraction(visitedLocation, attraction)) {
+						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+					}
+				}
+			}
+		}
 }
+
+
+//	public CompletableFuture<Void> calculateRewards(User user) {
+//		List<Attraction> attractions = gpsUtil.getAttractions();
+//		List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
+//		CompletableFuture
+//				.runAsync(() -> {
+//							for (VisitedLocation visitedLocation : userVisitedLocations) {
+//								for (Attraction attraction : attractions) {
+//									if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
+//											.equals(attraction.attractionName))) {
+//										if (nearAttraction(visitedLocation, attraction)) {
+//											user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+//										}
+//									}
+//								}
+//							}
+//						} 	, executorService);
+//		return null;
+//}
 
 
 
