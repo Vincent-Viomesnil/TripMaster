@@ -2,8 +2,11 @@ package tourGuide.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import gpsUtil.GpsUtil;
@@ -26,6 +29,8 @@ public class RewardsService {
 	private int attractionProximityRange = 200;
 	private GpsUtil gpsUtil;
 	private final RewardCentral rewardsCentral;
+	private Logger logger = LoggerFactory.getLogger(RewardsService.class);
+	ExecutorService executorService = Executors.newFixedThreadPool(100);
 
 	public RewardsService(GpsUtil gpsUtil, RewardCentral rewardCentral) {
 		this.gpsUtil = gpsUtil;
@@ -55,6 +60,32 @@ public class RewardsService {
 			}
 		}
 	}
+
+
+
+
+
+
+//	public void calculateRewards(User user) {
+//
+//		List<Attraction> attractions = gpsUtil.getAttractions();
+//		List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
+//		CompletableFuture.supplyAsync(() -> {
+//
+//					for (VisitedLocation visitedLocation : userVisitedLocations) {
+//						for (Attraction attraction : attractions) {
+//							if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
+//									.equals(attraction.attractionName))) {
+//								if (nearAttraction(visitedLocation, attraction)) {
+//									user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+//								}
+//							}
+//						}
+//					}
+//			return null;
+//		} 		, executorService);
+//
+//		}
 
 	public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
 		return (getDistance(attraction, location) < attractionProximityRange);

@@ -51,7 +51,7 @@ public class TestPerformance {
 
 	@Test
 	public void highVolumeTrackLocation() throws ExecutionException, InterruptedException {
-		//8sec => 23 sec
+		//8sec => 3999 second pour 100000users
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes (2/3 minutes en réalité env200sec)
@@ -68,6 +68,7 @@ public class TestPerformance {
 		for (User user : allUsers) {
 			tourGuideService.trackUserLocation(user);
 		}
+		tourGuideService.awaitTrackUserLocationEnding();
 
 		stopWatch.stop();
 		tourGuideService.tracker.stopTracking();
@@ -77,12 +78,12 @@ public class TestPerformance {
 	}
 	@Test
 	public void highVolumeGetRewards() {
-		// 52sec =>
+		// 52sec => 148 pour 10 000?
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 
 		// Users should be incremented up to 100,000, and test finishes within 20 minutes (environ 2minutes en réalité env100sec)
-		InternalTestHelper.setInternalUserNumber(100);
+		InternalTestHelper.setInternalUserNumber(1000); //3260sec pour Yannick  à 100 000
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
@@ -90,6 +91,7 @@ public class TestPerformance {
 	    Attraction attraction = gpsUtil.getAttractions().get(0);
 		List<User> allUsers = new ArrayList<>();
 		allUsers = tourGuideService.getAllUsers();
+//		allUsers.parallelStream().forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 		allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 
 	    allUsers.forEach(u -> rewardsService.calculateRewards(u));
@@ -97,6 +99,7 @@ public class TestPerformance {
 		for(User user : allUsers) {
 			assertTrue(user.getUserRewards().size() > 0);
 		}
+		tourGuideService.awaitTrackUserLocationEnding();
 		stopWatch.stop();
 		tourGuideService.tracker.stopTracking();
 

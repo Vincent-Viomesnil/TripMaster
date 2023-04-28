@@ -38,7 +38,7 @@ public class TestTourGuideService {
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 		
 		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-		VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user);
+		VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user).get();
 		tourGuideService.tracker.stopTracking();
 		assertTrue(visitedLocation.userId.equals(user.getUserId()));
 	}
@@ -94,7 +94,7 @@ public class TestTourGuideService {
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 		
 		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-		VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user);
+		VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user).get();
 		
 		tourGuideService.tracker.stopTracking();
 		
@@ -109,7 +109,7 @@ public void getNearbyAttractions() throws ExecutionException, InterruptedExcepti
 	TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
 	User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-	VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user);
+	VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user).get();
 
 	List<Attraction> attractions = tourGuideService.getNearByAttractions(visitedLocation); //debug, ne pas changer le test
 
