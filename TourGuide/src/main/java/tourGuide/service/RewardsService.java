@@ -45,23 +45,42 @@ public class RewardsService {
 		proximityBuffer = defaultProximityBuffer;
 	}
 
-	public void calculateRewards(User user) {
+
+//	public void calculateRewards(User user) {
+//		List<Attraction> attractions = gpsUtil.getAttractions();
+//		List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
+////		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
+//		for (VisitedLocation visitedLocation : userVisitedLocations) {
+//			for (Attraction attraction : attractions) {
+//				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
+//						.equals(attraction.attractionName))) {
+//					if (nearAttraction(visitedLocation, attraction)) {
+//						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+//					}
+//				}
+//			}
+//		}
+//}
+
+
+	public CompletableFuture<Void> calculateRewards(User user) {
 		List<Attraction> attractions = gpsUtil.getAttractions();
 		List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
-//		List<VisitedLocation> userVisitedLocations = user.getVisitedLocations();
-		for (VisitedLocation visitedLocation : userVisitedLocations) {
-			for (Attraction attraction : attractions) {
-				if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
-						.equals(attraction.attractionName))) {
-					if (nearAttraction(visitedLocation, attraction)) {
-						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
-					}
-				}
-			}
-		}
-	}
-
-
+		CompletableFuture
+				.supplyAsync(() -> {
+							for (VisitedLocation visitedLocation : userVisitedLocations) {
+								for (Attraction attraction : attractions) {
+									if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
+											.equals(attraction.attractionName))) {
+										if (nearAttraction(visitedLocation, attraction)) {
+											user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+										}
+									}
+								}
+							} return null;
+						} 	, executorService);
+		return null;
+}
 
 
 

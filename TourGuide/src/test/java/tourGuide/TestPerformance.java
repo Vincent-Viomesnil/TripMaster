@@ -78,12 +78,12 @@ public class TestPerformance {
 	}
 	@Test
 	public void highVolumeGetRewards() {
-		// 52sec => 148 pour 10 000?
+		// 52sec => 148sec pour 10 000
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 
 		// Users should be incremented up to 100,000, and test finishes within 20 minutes (environ 2minutes en réalité env100sec)
-		InternalTestHelper.setInternalUserNumber(1000); //3260sec pour Yannick  à 100 000
+		InternalTestHelper.setInternalUserNumber(100000); //3260sec pour Yannick  à 100 000
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
