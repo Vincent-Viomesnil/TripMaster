@@ -95,7 +95,13 @@ public class TourGuideService {
 						.supplyAsync(() -> {
 							VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
 							user.addToVisitedLocations(visitedLocation);
-							rewardsService.calculateRewards(user);
+							try {
+								rewardsService.calculateRewards(user);
+							} catch (ExecutionException e) {
+								throw new RuntimeException(e);
+							} catch (InterruptedException e) {
+								throw new RuntimeException(e);
+							}
 							return visitedLocation;
 						}, executorService);
 			}

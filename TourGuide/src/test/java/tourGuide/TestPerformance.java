@@ -94,7 +94,15 @@ public class TestPerformance {
 //		allUsers.parallelStream().forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 		allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 
-	    allUsers.forEach(u -> rewardsService.calculateRewards(u));
+	    allUsers.forEach(u -> {
+			try {
+				rewardsService.calculateRewards(u);
+			} catch (ExecutionException e) {
+				throw new RuntimeException(e);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		});
 
 		for(User user : allUsers) {
 			assertTrue(user.getUserRewards().size() > 0);
