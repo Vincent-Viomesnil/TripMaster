@@ -136,7 +136,7 @@ public class TourGuideService {
 //	return visitedLocation;
 //}
 	public User getUser(String userName) {
-<span class="nc" id="L139">		return internalUserMap.get(userName);</span>
+<span class="fc" id="L139">		return internalUserMap.get(userName);</span>
 	}
 	
 	public List&lt;User&gt; getAllUsers() {
@@ -144,22 +144,22 @@ public class TourGuideService {
 	}
 	
 	public void addUser(User user) {
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		if(!internalUserMap.containsKey(user.getUserName())) {</span>
-<span class="nc" id="L148">			internalUserMap.put(user.getUserName(), user);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if(!internalUserMap.containsKey(user.getUserName())) {</span>
+<span class="fc" id="L148">			internalUserMap.put(user.getUserName(), user);</span>
 		}
-<span class="nc" id="L150">	}</span>
+<span class="fc" id="L150">	}</span>
 	
 	public List&lt;Provider&gt; getTripDeals(User user) {
-<span class="nc" id="L153">		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
-<span class="nc" id="L154">		List&lt;Provider&gt; providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), </span>
-<span class="nc" id="L155">				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);</span>
+<span class="pc" id="L153">		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
+<span class="fc" id="L154">		List&lt;Provider&gt; providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), </span>
+<span class="fc" id="L155">				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);</span>
 
 //		providers.addAll(tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(),
 //				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints));
 // Si besoin de setter la list de providers à 10
-<span class="nc" id="L160">		user.setTripDeals(providers);</span>
+<span class="fc" id="L160">		user.setTripDeals(providers);</span>
 		//Provider.class ne peut être modifié
-<span class="nc" id="L162">		return providers;</span>
+<span class="fc" id="L162">		return providers;</span>
 	}
 
 
@@ -215,15 +215,15 @@ public class TourGuideService {
 //			}
 //		}
 	public List&lt;Attraction&gt; getNearByAttractions(VisitedLocation visitedLocation) {
-<span class="nc" id="L218">		List&lt;Attraction&gt; nearbyFiveAttractions =</span>
-<span class="nc" id="L219">			 gpsUtil.getAttractions()</span>
-<span class="nc" id="L220">					.stream()</span>
-<span class="nc" id="L221">					 .sorted(Comparator.comparing(attraction -&gt; rewardsService.getDistance(visitedLocation.location, attraction)))</span>
+<span class="fc" id="L218">		List&lt;Attraction&gt; nearbyFiveAttractions =</span>
+<span class="fc" id="L219">			 gpsUtil.getAttractions()</span>
+<span class="fc" id="L220">					.stream()</span>
+<span class="fc" id="L221">					 .sorted(Comparator.comparing(attraction -&gt; rewardsService.getDistance(visitedLocation.location, attraction)))</span>
 //					.sorted(Comparator.comparing(attraction -&gt; rewardsService.nearAttraction(visitedLocation, attraction)))
-<span class="nc" id="L223">					.limit(5)</span>
-<span class="nc" id="L224">					.collect(Collectors.toList());</span>
+<span class="fc" id="L223">					.limit(5)</span>
+<span class="fc" id="L224">					.collect(Collectors.toList());</span>
 
-<span class="nc" id="L226">		return nearbyFiveAttractions;</span>
+<span class="fc" id="L226">		return nearbyFiveAttractions;</span>
 	}
 
 	public List&lt;UserLocation&gt; getAllCurrentLocations(List&lt;User&gt; userList) {

@@ -3,6 +3,7 @@ package tourGuide;
 import static org.junit.Assert.*;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import gpsUtil.location.Location;
@@ -76,6 +77,13 @@ public class TestRewardsService {
 		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
 		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
 		tourGuideService.tracker.stopTracking();
+
+//		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
+//		CompletableFuture<List<UserReward>> future =  CompletableFuture.supplyAsync(()
+//				-> tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0)));
+//		tourGuideService.tracker.stopTracking();
+
+
 
 		assertEquals(gpsUtil.getAttractions().size(), userRewards.size());
 		///	gpsUtil.getAttractions().size()=26 userRewards.size())= nombre aléatoire

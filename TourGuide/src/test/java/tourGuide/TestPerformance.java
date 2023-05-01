@@ -51,7 +51,7 @@ public class TestPerformance {
 
 	@Test
 	public void highVolumeTrackLocation() throws ExecutionException, InterruptedException {
-		//8sec => 3999 second pour 100000users
+		//8sec => 4sec pour 1000, 39 sec pour 10 000, 399 second pour 100000users
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes (2/3 minutes en réalité env200sec)
@@ -78,7 +78,7 @@ public class TestPerformance {
 	}
 	@Test
 	public void highVolumeGetRewards() {
-		// 52sec => 148sec pour 10 000
+		// 52sec => 15 sec pour 1000, 143sec pour 10 000, sec pour 100 000
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 
@@ -95,13 +95,7 @@ public class TestPerformance {
 		allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 
 	    allUsers.forEach(u -> {
-			try {
-				rewardsService.calculateRewards(u);
-			} catch (ExecutionException e) {
-				throw new RuntimeException(e);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			rewardsService.calculateRewards(u);
 		});
 
 		for(User user : allUsers) {
