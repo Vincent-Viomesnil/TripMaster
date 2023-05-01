@@ -42,6 +42,22 @@ public class RewardsService {
         proximityBuffer = defaultProximityBuffer;
     }
 
+
+    public void calculateRewards(User user) {
+        List<Attraction> attractions = gpsUtil.getAttractions();
+        List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
+        for (VisitedLocation visitedLocation : userVisitedLocations) {
+            for (Attraction attraction : attractions) {
+                if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
+                        .equals(attraction.attractionName))) {
+                    if (nearAttraction(visitedLocation, attraction)) {
+                        user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+                    }
+                }
+            }
+        }
+    }
+
 //	public void calculateRewards(User user) {
 //		List<VisitedLocation> userLocations = user.getVisitedLocations();
 //	List<Attraction> allAttractions = gpsUtil.getAttractions();
@@ -101,25 +117,23 @@ public class RewardsService {
 //}
 
 
-	public void calculateRewards(User user) {
-
-		List<Attraction> attractions = gpsUtil.getAttractions();
-		List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
-        CompletableFuture.runAsync(() -> {
-
-					for (VisitedLocation visitedLocation : userVisitedLocations) {
-						for (Attraction attraction : attractions) {
-							if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
-									.equals(attraction.attractionName))) {
-								if (nearAttraction(visitedLocation, attraction)) {
-									user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
-								}
-							}
-						}
-					}
-		} 		, executorService);
-
-    }
+//    public void calculateRewards(User user) {
+//        List<Attraction> attractions = gpsUtil.getAttractions();
+//        List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
+//        CompletableFuture.runAsync(() -> {
+//
+//            for (VisitedLocation visitedLocation : userVisitedLocations) {
+//                for (Attraction attraction : attractions) {
+//                    if (user.getUserRewards().stream().noneMatch(reward -> reward.attraction.attractionName
+//                            .equals(attraction.attractionName))) {
+//                        if (nearAttraction(visitedLocation, attraction)) {
+//                            user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+//                        }
+//                    }
+//                }
+//            }
+//        }, executorService);
+//    }
 
     public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
         return (getDistance(attraction, location) < attractionProximityRange);
