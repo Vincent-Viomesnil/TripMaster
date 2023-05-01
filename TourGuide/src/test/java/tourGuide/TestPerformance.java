@@ -51,11 +51,11 @@ public class TestPerformance {
 
 	@Test
 	public void highVolumeTrackLocation() throws ExecutionException, InterruptedException {
-		//8sec => 4sec pour 1000, 39 sec pour 10 000, 399 second pour 100000users
+		//8sec => 4sec pour 1000, 39sec (21sec avec paralleStream) pour 10 000,  399 (211avec parallelstream) second pour 100000users
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes (2/3 minutes en réalité env200sec)
-		InternalTestHelper.setInternalUserNumber(100);
+		InternalTestHelper.setInternalUserNumber(100000);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
 		List<User> allUsers = new ArrayList<>();
