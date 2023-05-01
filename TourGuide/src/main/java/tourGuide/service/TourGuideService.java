@@ -98,7 +98,12 @@ public class TourGuideService {
 							rewardsService.calculateRewards(user);
 							return visitedLocation;
 						}, executorService);
-			}
+//						.thenApply(visitedLocation -> {
+//							System.out.println("User " + user.getUserName() + " tracked at location " + visitedLocation.location.toString());
+//							return visitedLocation;
+//						});
+
+		}
 
 //	public Future<VisitedLocation> trackUserLocation(User user) {
 //		Locale.setDefault(Locale.US);
