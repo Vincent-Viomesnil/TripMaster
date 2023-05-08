@@ -81,7 +81,7 @@ public class TestPerformance {
 	}
 	@Test
 	public void highVolumeGetRewards() {
-		// 52sec => 15 sec puis 11 sec pour 1000, 143sec (ou 38 avec parallelstream) puis 103sec pour 10 000,
+		// 52sec => 15 sec puis 11 sec puis 7sec pour 1000, 143sec (ou 38 avec parallelstream) puis 103sec pour 10 000,
 		// 559sec(avec parallelstream) puis 1070sec pour 100 000
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());

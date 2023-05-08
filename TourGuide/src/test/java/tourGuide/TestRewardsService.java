@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import gpsUtil.location.Location;
 import org.junit.BeforeClass;
@@ -41,6 +42,12 @@ public class TestRewardsService {
 		user.addToVisitedLocations(new VisitedLocation(user.getUserId(), attraction, new Date()));
 		tourGuideService.trackUserLocation(user).get();
 		List<UserReward> userRewards = user.getUserRewards();
+			while (user.getUserRewards().isEmpty()) {
+				try {
+					TimeUnit.MILLISECONDS.sleep(200);
+				} catch (InterruptedException e) {
+				}
+		}
 		tourGuideService.tracker.stopTracking();
 		assertEquals(1, userRewards.size());
 	}
@@ -76,6 +83,13 @@ public class TestRewardsService {
 
 		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
 		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
+
+			while (tourGuideService.getAllUsers().get(0).getUserRewards().size()<gpsUtil.getAttractions().size()) {
+				try {
+					TimeUnit.MILLISECONDS.sleep(500);
+				} catch (InterruptedException e) {
+				}
+		}
 		tourGuideService.tracker.stopTracking();
 
 //		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
