@@ -31,7 +31,7 @@ public class TourGuideService {
 <span class="fc" id="L31">	private final TripPricer tripPricer = new TripPricer();</span>
 	public final Tracker tracker;
 <span class="fc" id="L33">	boolean testMode = true;</span>
-<span class="fc" id="L34">	ExecutorService executorService = Executors.newFixedThreadPool(100);</span>
+<span class="fc" id="L34">	ExecutorService executorService = Executors.newFixedThreadPool(150);</span>
 //	public CountDownLatch usersCountDownLatch;
 	
 <span class="fc" id="L37">	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {</span>
@@ -126,7 +126,7 @@ public class TourGuideService {
 <span class="nc" id="L126">			executorService.shutdownNow();</span>
 <span class="nc" id="L127">			Thread.currentThread().interrupt();</span>
 
-<span class="nc" id="L129">			executorService = Executors.newFixedThreadPool(100);</span>
+<span class="nc" id="L129">			executorService = Executors.newFixedThreadPool(150);</span>
 <span class="fc" id="L130">		}</span>
 <span class="fc" id="L131">	}</span>
 //public VisitedLocation trackUserLocation(User user) throws ExecutionException, InterruptedException {

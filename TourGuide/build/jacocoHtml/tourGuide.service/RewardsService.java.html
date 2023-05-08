@@ -27,7 +27,7 @@ public class RewardsService {
     private GpsUtil gpsUtil;
     private final RewardCentral rewardsCentral;
 <span class="fc" id="L29">    private Logger logger = LoggerFactory.getLogger(RewardsService.class);</span>
-<span class="fc" id="L30">    ExecutorService executorService = Executors.newFixedThreadPool(100);</span>
+<span class="fc" id="L30">    ExecutorService executorService = Executors.newFixedThreadPool(150);</span>
 
 <span class="fc" id="L32">    public RewardsService(GpsUtil gpsUtil, RewardCentral rewardCentral) {</span>
 <span class="fc" id="L33">        this.gpsUtil = gpsUtil;</span>
@@ -127,12 +127,12 @@ public class RewardsService {
 
     public void calculateRewards(User user) {
 <span class="fc" id="L129">        CompletableFuture.runAsync(() -&gt; {</span>
-<span class="fc" id="L130">            List&lt;VisitedLocation&gt; userLocations = new ArrayList&lt;&gt;(user.getVisitedLocations());</span>
+<span class="fc" id="L130">            List&lt;VisitedLocation&gt; userVisitedLocations = new ArrayList&lt;&gt;(user.getVisitedLocations());</span>
 <span class="fc" id="L131">            List&lt;Attraction&gt; attractions = gpsUtil.getAttractions();</span>
-<span class="fc bfc" id="L132" title="All 2 branches covered.">            for (VisitedLocation visitedLocation : userLocations) {</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">                for (Attraction attr : attractions) {</span>
-<span class="fc bfc" id="L134" title="All 2 branches covered.">                    if (nearAttraction(visitedLocation, attr)) {</span>
-<span class="fc" id="L135">                        user.addUserReward(new UserReward(visitedLocation, attr,  getRewardPoints(attr, user)));</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">            for (VisitedLocation visitedLocation : userVisitedLocations) {</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">                for (Attraction attraction : attractions) {</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">                    if (nearAttraction(visitedLocation, attraction)) {</span>
+<span class="fc" id="L135">                        user.addUserReward(new UserReward(visitedLocation, attraction,  getRewardPoints(attraction, user)));</span>
                     }
 <span class="fc" id="L137">                }</span>
 <span class="fc" id="L138">            }</span>

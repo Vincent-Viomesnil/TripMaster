@@ -31,7 +31,7 @@ public class TourGuideService {
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
 	boolean testMode = true;
-	ExecutorService executorService = Executors.newFixedThreadPool(100);
+	ExecutorService executorService = Executors.newFixedThreadPool(150);
 //	public CountDownLatch usersCountDownLatch;
 	
 	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {
@@ -126,7 +126,7 @@ public class TourGuideService {
 			executorService.shutdownNow();
 			Thread.currentThread().interrupt();
 
-			executorService = Executors.newFixedThreadPool(100);
+			executorService = Executors.newFixedThreadPool(150);
 		}
 	}
 //public VisitedLocation trackUserLocation(User user) throws ExecutionException, InterruptedException {

@@ -27,7 +27,7 @@ public class RewardsService {
     private GpsUtil gpsUtil;
     private final RewardCentral rewardsCentral;
     private Logger logger = LoggerFactory.getLogger(RewardsService.class);
-    ExecutorService executorService = Executors.newFixedThreadPool(100);
+    ExecutorService executorService = Executors.newFixedThreadPool(150);
 
     public RewardsService(GpsUtil gpsUtil, RewardCentral rewardCentral) {
         this.gpsUtil = gpsUtil;
@@ -127,12 +127,12 @@ public class RewardsService {
 
     public void calculateRewards(User user) {
         CompletableFuture.runAsync(() -> {
-            List<VisitedLocation> userLocations = new ArrayList<>(user.getVisitedLocations());
+            List<VisitedLocation> userVisitedLocations = new ArrayList<>(user.getVisitedLocations());
             List<Attraction> attractions = gpsUtil.getAttractions();
-            for (VisitedLocation visitedLocation : userLocations) {
-                for (Attraction attr : attractions) {
-                    if (nearAttraction(visitedLocation, attr)) {
-                        user.addUserReward(new UserReward(visitedLocation, attr,  getRewardPoints(attr, user)));
+            for (VisitedLocation visitedLocation : userVisitedLocations) {
+                for (Attraction attraction : attractions) {
+                    if (nearAttraction(visitedLocation, attraction)) {
+                        user.addUserReward(new UserReward(visitedLocation, attraction,  getRewardPoints(attraction, user)));
                     }
                 }
             }
