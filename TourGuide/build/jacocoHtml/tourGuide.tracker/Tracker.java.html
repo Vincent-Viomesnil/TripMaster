@@ -40,15 +40,15 @@ public class Tracker extends Thread {
 	public void run() {
 <span class="fc" id="L41">		StopWatch stopWatch = new StopWatch();</span>
 		while(true) {
-<span class="pc bpc" id="L43" title="2 of 4 branches missed.">			if(Thread.currentThread().isInterrupted() || stop) {</span>
-<span class="nc" id="L44">				logger.debug(&quot;Tracker stopping&quot;);</span>
-<span class="nc" id="L45">				break;</span>
+<span class="fc bfc" id="L43" title="All 4 branches covered.">			if(Thread.currentThread().isInterrupted() || stop) {</span>
+<span class="fc" id="L44">				logger.debug(&quot;Tracker stopping&quot;);</span>
+<span class="fc" id="L45">				break;</span>
 			}
 
 <span class="fc" id="L48">			List&lt;User&gt; users = tourGuideService.getAllUsers();</span>
 <span class="fc" id="L49">			logger.debug(&quot;Begin Tracker. Tracking &quot; + users.size() + &quot; users.&quot;);</span>
 <span class="fc" id="L50">			stopWatch.start();</span>
-<span class="fc" id="L51">			users.parallelStream().forEach(u -&gt; {</span>
+<span class="fc" id="L51">			users.forEach(u -&gt; {</span>
 <span class="fc" id="L52">				tourGuideService.trackUserLocation(u);</span>
 <span class="fc" id="L53">			});</span>
 <span class="fc" id="L54">			stopWatch.stop();</span>

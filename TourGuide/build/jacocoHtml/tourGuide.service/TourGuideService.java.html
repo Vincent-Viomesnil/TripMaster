@@ -171,10 +171,10 @@ public class TourGuideService {
 
 	public UserPreferences updateUserPreferences(String userName, UserPreferences userPreferences){
 
-<span class="nc" id="L174">		User user = getUser(userName);</span>
-<span class="nc" id="L175">		user.setUserPreferences(userPreferences);</span>
+<span class="fc" id="L174">		User user = getUser(userName);</span>
+<span class="fc" id="L175">		user.setUserPreferences(userPreferences);</span>
 
-<span class="nc" id="L177">		return userPreferences;</span>
+<span class="fc" id="L177">		return userPreferences;</span>
 	}
 
 
@@ -233,15 +233,15 @@ public class TourGuideService {
 
 	public List&lt;UserLocation&gt; getAllCurrentLocations(List&lt;User&gt; userList) {
 
-<span class="nc" id="L236">		List&lt;UserLocation&gt; allCurrentLocations = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (User user : userList) {</span>
-<span class="nc" id="L238">			UserLocation userLocation = new UserLocation();</span>
-<span class="nc" id="L239">			userLocation.setUserid(user.getUserId().toString());</span>
-<span class="nc" id="L240">			userLocation.setVisitedLongitude(user.getLastVisitedLocation().location.longitude);</span>
-<span class="nc" id="L241">			userLocation.setVisitedLatitude(user.getLastVisitedLocation().location.latitude);</span>
-<span class="nc" id="L242">			allCurrentLocations.add(userLocation);</span>
-<span class="nc" id="L243">		}</span>
-<span class="nc" id="L244">		return allCurrentLocations;</span>
+<span class="fc" id="L236">		List&lt;UserLocation&gt; allCurrentLocations = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">		for (User user : userList) {</span>
+<span class="fc" id="L238">			UserLocation userLocation = new UserLocation();</span>
+<span class="fc" id="L239">			userLocation.setUserid(user.getUserId().toString());</span>
+<span class="fc" id="L240">			userLocation.setVisitedLongitude(user.getLastVisitedLocation().location.longitude);</span>
+<span class="fc" id="L241">			userLocation.setVisitedLatitude(user.getLastVisitedLocation().location.latitude);</span>
+<span class="fc" id="L242">			allCurrentLocations.add(userLocation);</span>
+<span class="fc" id="L243">		}</span>
+<span class="fc" id="L244">		return allCurrentLocations;</span>
 	}
 
 	public List&lt;UserAttraction&gt; getAttractions(VisitedLocation visitedLocation) {
