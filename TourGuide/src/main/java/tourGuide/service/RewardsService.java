@@ -132,13 +132,12 @@ public class RewardsService {
             for (VisitedLocation visitedLocation : userVisitedLocations) {
                 for (Attraction attraction : attractions) {
                     if (nearAttraction(visitedLocation, attraction)) {
-                        user.addUserReward(new UserReward(visitedLocation, attraction,  getRewardPoints(attraction, user)));
+                        user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
                     }
                 }
             }
         }, executorService);
     }
-
 
 
     public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
