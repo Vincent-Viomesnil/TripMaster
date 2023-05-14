@@ -42,7 +42,7 @@ test-code-job:
       - build
       - .gradle
 
-deploy-code:
+deploy-code-job:
   stage: deploy
   script: echo "Define your deployment script!"
   environment: production
