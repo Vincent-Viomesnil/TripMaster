@@ -10,23 +10,29 @@
 # https://gradle.org/
 # https://github.com/gradle/gradle
 
-image: gradle:alpine
+image: gradle:4.8.1
 
 before_script:
-  - GRADLE_USER_HOME="$(pwd)/.gradle"
-  - export GRADLE_USER_HOME
+  - cd TourGuide
+stages:
+  - build
+  - test
+  - deploy
 
-build:
+build-code-job:
   stage: build
-  script: gradle --build-cache assemble
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
+  script: gradle build
+  artifacts:
     paths:
-      - build
-      - .gradle
+      - TourGuide/build/libs/*.jar
 
-test:
+#test:
+#  script:
+#    - echo "Check the java version, then build some Java project files:"
+#    - java -v
+#    - rake
+
+test-code-job:
   stage: test
   script: gradle check
   cache:
@@ -36,7 +42,7 @@ test:
       - build
       - .gradle
 
-deploy:
+deploy-code:
   stage: deploy
   script: echo "Define your deployment script!"
   environment: production
