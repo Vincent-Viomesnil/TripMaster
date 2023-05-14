@@ -3,6 +3,9 @@ package tourGuide;
 import static org.junit.Assert.*;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import gpsUtil.location.Location;
 import org.junit.BeforeClass;
@@ -27,7 +30,7 @@ public class TestRewardsService {
 	}
 
 	@Test
-	public void userGetRewards() {
+	public void userGetRewards() throws ExecutionException, InterruptedException {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 
@@ -37,10 +40,16 @@ public class TestRewardsService {
 		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 		Attraction attraction = gpsUtil.getAttractions().get(0);
 		user.addToVisitedLocations(new VisitedLocation(user.getUserId(), attraction, new Date()));
-		tourGuideService.trackUserLocation(user);
+		tourGuideService.trackUserLocation(user).get();
 		List<UserReward> userRewards = user.getUserRewards();
+			while (user.getUserRewards().isEmpty()) {
+				try {
+					TimeUnit.MILLISECONDS.sleep(200);
+				} catch (InterruptedException e) {
+				}
+		}
 		tourGuideService.tracker.stopTracking();
-		assertTrue(userRewards.size() == 1);
+		assertEquals(1, userRewards.size());
 	}
 	
 	@Test
@@ -63,7 +72,7 @@ public class TestRewardsService {
 	
 //	@Ignore // Needs fixed - can throw ConcurrentModificationException
 	@Test
-	public void nearAllAttractions() {
+	public void nearAllAttractions() throws ExecutionException, InterruptedException {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		rewardsService.setProximityBuffer(Integer.MAX_VALUE);
@@ -74,7 +83,21 @@ public class TestRewardsService {
 
 		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
 		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
+
+			while (tourGuideService.getAllUsers().get(0).getUserRewards().size()<gpsUtil.getAttractions().size()) {
+				try {
+					TimeUnit.MILLISECONDS.sleep(500);
+				} catch (InterruptedException e) {
+				}
+		}
 		tourGuideService.tracker.stopTracking();
+
+//		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
+//		CompletableFuture<List<UserReward>> future =  CompletableFuture.supplyAsync(()
+//				-> tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0)));
+//		tourGuideService.tracker.stopTracking();
+
+
 
 		assertEquals(gpsUtil.getAttractions().size(), userRewards.size());
 		///	gpsUtil.getAttractions().size()=26 userRewards.size())= nombre aléatoire
@@ -83,7 +106,7 @@ public class TestRewardsService {
 	}
 
 	@Test
-	public void nearAttraction() {
+	public void nearAttraction() throws ExecutionException, InterruptedException {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		rewardsService.setProximityBuffer(100);

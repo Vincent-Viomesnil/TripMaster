@@ -34,7 +34,7 @@ public class User {
 	}
 
 	public String getUserName() {
-<span class="nc" id="L37">		return userName;</span>
+<span class="fc" id="L37">		return userName;</span>
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
@@ -74,11 +74,11 @@ public class User {
 <span class="nc" id="L74">	}</span>
 
 	public void addUserReward(UserReward userReward) {
-//		if(userRewards.stream().filter(r -&gt; r.attraction.attractionName.equals(userReward.attraction.attractionName)).count() == 0) {
+<span class="fc bfc" id="L77" title="All 2 branches covered.">	if(userRewards.stream().noneMatch(r -&gt; r.attraction.attractionName.equals(userReward.attraction.attractionName))) {</span>
 ////		if(userRewards.stream().filter(r -&gt; !r.attraction.attractionName.equals(userReward.attraction)).count() == 0)
 <span class="fc" id="L79">		userRewards.add(userReward);</span>
-<span class="fc" id="L80">	}</span>
-//}
+	}
+<span class="fc" id="L81">}</span>
 
 	public List&lt;UserReward&gt; getUserRewards() {
 <span class="fc" id="L84">		return userRewards;</span>
@@ -89,8 +89,8 @@ public class User {
 	}
 
 	public void setUserPreferences(UserPreferences userPreferences) {
-<span class="nc" id="L92">		this.userPreferences = userPreferences;</span>
-<span class="nc" id="L93">	}</span>
+<span class="fc" id="L92">		this.userPreferences = userPreferences;</span>
+<span class="fc" id="L93">	}</span>
 
 	public VisitedLocation getLastVisitedLocation() {
 <span class="fc" id="L96">		return visitedLocations.get(visitedLocations.size() - 1);</span>
