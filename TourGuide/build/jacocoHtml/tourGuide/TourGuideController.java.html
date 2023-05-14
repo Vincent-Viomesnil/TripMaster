@@ -19,9 +19,9 @@ import tripPricer.Provider;
 @RestController
 <span class="nc" id="L20">public class TourGuideController {</span>
 
-	@Autowired
-	TourGuideService tourGuideService;
-	
+    @Autowired
+    TourGuideService tourGuideService;
+
     @RequestMapping(&quot;/&quot;)
     public String index() {
 <span class="nc" id="L27">        return &quot;Greetings from TourGuide!&quot;;</span>
@@ -43,49 +43,51 @@ import tripPricer.Provider;
 //          Note: Attraction reward points can be gathered from RewardsCentral
 
     }
-    @RequestMapping(&quot;/getNearbyAttractions&quot;) 
+
+    @RequestMapping(&quot;/getNearbyAttractions&quot;)
     public String getNearbyAttractions(@RequestParam String userName) throws ExecutionException, InterruptedException {
-<span class="nc" id="L48">    	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));</span>
-<span class="nc" id="L49">    	return JsonStream.serialize(tourGuideService.getNearByAttractions(visitedLocation));</span>
+<span class="nc" id="L49">        VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));</span>
+<span class="nc" id="L50">        return JsonStream.serialize(tourGuideService.getNearByAttractions(visitedLocation));</span>
     }
-    
+
     @RequestMapping(&quot;/getRewards&quot;) //Ne pas modifier
     public String getRewards(@RequestParam String userName) {
-<span class="nc" id="L54">    	return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));</span>
+<span class="nc" id="L55">        return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));</span>
     }
-    
+
     @RequestMapping(&quot;/getAllCurrentLocations&quot;)
-    public String getAllCurrentLocations()  {
+    public String getAllCurrentLocations() {
 
-    	// TODO: Get a list of every user's most recent location as JSON
-    	//- Note: does not use gpsUtil to query for their current location, 
-    	//        but rather gathers the user's current location from their stored location history.
-    	//
-    	// Return object should be the just a JSON mapping of userId to Locations similar to:
-    	//     {
-    	//        &quot;019b04a9-067a-4c76-8817-ee75088c3822&quot;: {&quot;longitude&quot;:-48.188821,&quot;latitude&quot;:74.84371} 
-    	//        ...
-    	//     }
+        // TODO: Get a list of every user's most recent location as JSON
+        //- Note: does not use gpsUtil to query for their current location,
+        //        but rather gathers the user's current location from their stored location history.
+        //
+        // Return object should be the just a JSON mapping of userId to Locations similar to:
+        //     {
+        //        &quot;019b04a9-067a-4c76-8817-ee75088c3822&quot;: {&quot;longitude&quot;:-48.188821,&quot;latitude&quot;:74.84371}
+        //        ...
+        //     }
 
-<span class="nc" id="L70">        List&lt;UserLocation&gt; allCurrentLocations = tourGuideService.getAllCurrentLocations(tourGuideService.getAllUsers());</span>
-<span class="nc" id="L71">    	return JsonStream.serialize(allCurrentLocations);</span>
+<span class="nc" id="L71">        List&lt;UserLocation&gt; allCurrentLocations = tourGuideService.getAllCurrentLocations(tourGuideService.getAllUsers());</span>
+<span class="nc" id="L72">        return JsonStream.serialize(allCurrentLocations);</span>
     }
-    
+
     @RequestMapping(&quot;/getTripDeals&quot;)
     public String getTripDeals(@RequestParam String userName) {
-<span class="nc" id="L76">    	List&lt;Provider&gt; providers = tourGuideService.getTripDeals(getUser(userName));</span>
-<span class="nc" id="L77">    	return JsonStream.serialize(providers);</span>
+<span class="nc" id="L77">        List&lt;Provider&gt; providers = tourGuideService.getTripDeals(getUser(userName));</span>
+<span class="nc" id="L78">        return JsonStream.serialize(providers);</span>
     }
+
     @PutMapping(&quot;/updateUserPreferences/{userName}&quot;)
     public UserPreferences updateUserPreferences(@PathVariable String userName, @RequestBody UserPreferences userPreferences) {
         //ResponseEntity
-<span class="nc" id="L82">        return tourGuideService.updateUserPreferences(userName, userPreferences);</span>
+<span class="nc" id="L84">        return tourGuideService.updateUserPreferences(userName, userPreferences);</span>
     }
 
     @RequestMapping(&quot;/getUserPreferences/{userName}&quot;)
     public UserPreferences getUserPreferences(@PathVariable String userName) {
-       //ResponseEntity
-<span class="nc" id="L88">        return tourGuideService.getUserPreferences(userName);</span>
+        //ResponseEntity
+<span class="nc" id="L90">        return tourGuideService.getUserPreferences(userName);</span>
     }
 
     //Vérifier user =&gt; màj dans la liste des intenaluser (userPreferences)
@@ -107,11 +109,11 @@ import tripPricer.Provider;
 //        return JsonStream.serialize(userPreferences);
 //    }
 
-    
+
     private User getUser(String userName) {
-<span class="nc" id="L112">    	return tourGuideService.getUser(userName);</span>
+<span class="nc" id="L114">        return tourGuideService.getUser(userName);</span>
     }
-   
+
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

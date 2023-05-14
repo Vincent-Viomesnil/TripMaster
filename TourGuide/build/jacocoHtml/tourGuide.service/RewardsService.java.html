@@ -132,7 +132,7 @@ public class RewardsService {
 <span class="fc bfc" id="L132" title="All 2 branches covered.">            for (VisitedLocation visitedLocation : userVisitedLocations) {</span>
 <span class="fc bfc" id="L133" title="All 2 branches covered.">                for (Attraction attraction : attractions) {</span>
 <span class="fc bfc" id="L134" title="All 2 branches covered.">                    if (nearAttraction(visitedLocation, attraction)) {</span>
-<span class="fc" id="L135">                        user.addUserReward(new UserReward(visitedLocation, attraction,  getRewardPoints(attraction, user)));</span>
+<span class="fc" id="L135">                        user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));</span>
                     }
 <span class="fc" id="L137">                }</span>
 <span class="fc" id="L138">            }</span>
@@ -140,31 +140,30 @@ public class RewardsService {
 <span class="fc" id="L140">    }</span>
 
 
-
     public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
-<span class="fc bfc" id="L145" title="All 2 branches covered.">        return (getDistance(attraction, location) &lt; attractionProximityRange);</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        return (getDistance(attraction, location) &lt; attractionProximityRange);</span>
     }
 
     public boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
-<span class="fc bfc" id="L149" title="All 2 branches covered.">        return (getDistance(attraction, visitedLocation.location) &lt; proximityBuffer);</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        return (getDistance(attraction, visitedLocation.location) &lt; proximityBuffer);</span>
     }
 
     private int getRewardPoints(Attraction attraction, User user) {
-<span class="fc" id="L153">        return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());</span>
+<span class="fc" id="L152">        return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());</span>
     }
 
     public double getDistance(Location loc1, Location loc2) {
-<span class="fc" id="L157">        double lat1 = Math.toRadians(loc1.latitude);</span>
-<span class="fc" id="L158">        double lon1 = Math.toRadians(loc1.longitude);</span>
-<span class="fc" id="L159">        double lat2 = Math.toRadians(loc2.latitude);</span>
-<span class="fc" id="L160">        double lon2 = Math.toRadians(loc2.longitude);</span>
+<span class="fc" id="L156">        double lat1 = Math.toRadians(loc1.latitude);</span>
+<span class="fc" id="L157">        double lon1 = Math.toRadians(loc1.longitude);</span>
+<span class="fc" id="L158">        double lat2 = Math.toRadians(loc2.latitude);</span>
+<span class="fc" id="L159">        double lon2 = Math.toRadians(loc2.longitude);</span>
 
-<span class="fc" id="L162">        double angle = Math.acos(Math.sin(lat1) * Math.sin(lat2)</span>
-<span class="fc" id="L163">                + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));</span>
+<span class="fc" id="L161">        double angle = Math.acos(Math.sin(lat1) * Math.sin(lat2)</span>
+<span class="fc" id="L162">                + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));</span>
 
-<span class="fc" id="L165">        double nauticalMiles = 60 * Math.toDegrees(angle);</span>
-<span class="fc" id="L166">        double statuteMiles = STATUTE_MILES_PER_NAUTICAL_MILE * nauticalMiles;</span>
-<span class="fc" id="L167">        return statuteMiles;</span>
+<span class="fc" id="L164">        double nauticalMiles = 60 * Math.toDegrees(angle);</span>
+<span class="fc" id="L165">        double statuteMiles = STATUTE_MILES_PER_NAUTICAL_MILE * nauticalMiles;</span>
+<span class="fc" id="L166">        return statuteMiles;</span>
     }
 
 }
