@@ -10,7 +10,7 @@
 # https://gradle.org/
 # https://github.com/gradle/gradle
 
-image: gradle:4.8.1
+# image: gradle-4.8.1
 
 
 stages:
