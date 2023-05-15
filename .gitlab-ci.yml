@@ -12,8 +12,7 @@
 
 image: gradle:4.8.1
 
-before_script:
-  - cd TourGuide
+
 stages:
   - build
   - test
