@@ -78,12 +78,10 @@ public class TestPerformance {
 	}
 	@Test
 	public void highVolumeGetRewards() {
-		// 52sec => 15 sec puis 11 sec puis 7sec pour 1000, 143sec (ou 38 avec parallelstream) puis 103sec puis 37 pour 10 000,
-		// 559sec(avec parallelstream) puis 1070sec puis 429 pour 100 000
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 
-		// Users should be incremented up to 100,000, and test finishes within 20 minutes (environ 2minutes en réalité env100sec)
+		// Users should be incremented up to 100,000, and test finishes within 20 minutes
 		InternalTestHelper.setInternalUserNumber(1000);
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
