@@ -1,0 +1,16 @@
+# This is the Gradle build system for JVM applications
+# https://gradle.org/
+# https://github.com/gradle/gradle
+
+image: gradle:4.8.1
+
+before_script:
+- cd TourGuide
+
+build:
+  stage: build
+  script: gradle build
+  artifacts:
+   paths:
+    - TourGuide/build/libs/*.jar
+
