@@ -21,5 +21,3 @@ build:
   artifacts:
    paths:
     - TourGuide/build/libs/*.jar
-
-# 15/05 09:56
