@@ -1,0 +1,47 @@
+# This file is a template, and might need editing before it works on your project.
+# You can copy and paste this template into a new `.gitlab-ci.yml` file.
+# You should not add this template to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Gradle.gitlab-ci.yml
+
+# This is the Gradle build system for JVM applications
+# https://gradle.org/
+# https://github.com/gradle/gradle
+
+# image: gradle-4.8.1
+
+
+stages:
+  - build
+  - test
+  - deploy
+
+build-code-job:
+  stage: build
+  script: gradle build
+  artifacts:
+    paths:
+      - TourGuide/build/libs/*.jar
+
+#test:
+#  script:
+#    - echo "Check the java version, then build some Java project files:"
+#    - java -v
+#    - rake
+
+test-code-job:
+  stage: test
+  script: gradle check
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
+
+deploy-code-job:
+  stage: deploy
+  script: echo "Define your deployment script!"
+  environment: production
