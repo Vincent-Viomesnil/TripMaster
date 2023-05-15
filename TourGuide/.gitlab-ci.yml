@@ -13,36 +13,13 @@
 image: gradle:4.8.1
 
 before_script:
-  - cd TourGuide
-stages:
-  - build
-  - test
-  - deploy
+- cd TourGuide
 
-build-code-job:
+build:
   stage: build
   script: gradle build
   artifacts:
-    paths:
-      - TourGuide/build/libs/*.jar
+   paths:
+    - TourGuide/build/libs/*.jar
 
-#test:
-#  script:
-#    - echo "Check the java version, then build some Java project files:"
-#    - java -v
-#    - rake
-
-test-code-job:
-  stage: test
-  script: gradle check
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: pull
-    paths:
-      - build
-      - .gradle
-
-deploy-code-job:
-  stage: deploy
-  script: echo "Define your deployment script!"
-  environment: production
+# 15/05 09:56
